@@ -108,62 +108,93 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background: rgba(0, 0, 0, 0.7);
+  background: rgba(24, 25, 28, 0.90); /* 0.85 es la opacidad, puedes ajustar */
   border-radius: 20px;
-  padding: 40px 32px;
-  width: 400px;
+  padding: 48px 36px;
+  width: 420px;
   color: white;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 22px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.18);
   z-index: 2;
 }
 
 .loginCard h2 {
   text-align: center;
-  font-size: 1.6rem;
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 18px;
+  letter-spacing: 1px;
 }
 
 .loginCard label {
   font-weight: 500;
-  margin-bottom: 4px;
+  margin-bottom: 6px;
+  font-size: 1.1rem;
 }
 
 .loginCard input {
-  padding: 12px;
-  border-radius: 10px;
-  border: none;
-  background: rgba(255, 255, 255, 0.1);
-  color: white;
+  padding: 14px;
+  border-radius: 12px;
+  border: 1px solid #333;
+  background: #23242a;
+  color: #fff;
+  font-size: 1rem;
+  margin-bottom: 10px;
 }
 
 .loginCard input::placeholder {
-  color: #ccc;
+  color: #888;
+  font-size: 0.98rem;
 }
 
 .passwordContainer {
   display: flex;
   align-items: center;
   position: relative;
+  margin-bottom: 10px;
+  border: 2px solid #444; /* Borde más claro */
+  border-radius: 12px;
+  background: #23242a;
+  height: 52px;
+}
+
+.passwordContainer input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  color: #fff;
+  font-size: 1rem;
+  padding: 0 16px;
+  height: 100%;
+  outline: none;
 }
 
 .eyeIcon {
   position: absolute;
-  right: 12px;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
   cursor: pointer;
-  font-size: 1.2rem;
-  color: #ccc;
+  font-size: 1.3rem;
+  color: #888;
+  background: transparent;
+  border: none;
+  z-index: 2;
 }
 
 .loginCard button {
-  margin-top: 16px;
+  margin-top: 18px;
   background: #007bff;
   color: white;   
-  padding: 14px;
+  padding: 16px;
   border: none;
-  border-radius: 10px;
+  border-radius: 12px;
   font-weight: bold;
+  font-size: 1.1rem;
   cursor: pointer;
+  transition: background 0.2s;
 }
 
 .loginCard button:hover {
