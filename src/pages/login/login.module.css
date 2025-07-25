@@ -1,0 +1,113 @@
+.container {
+  position: relative;
+  width: 100vw;    
+  height: 100vh;     
+  overflow: hidden;
+}
+
+.background {
+  position: absolute; 
+  top: 0;
+  left: 0;
+  width: 100vw;     
+  height: 100vh;    
+  object-fit: cover;
+  z-index: 0;         
+}
+
+.welcomeBlock {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;   
+  justify-content: center;  
+  height: 100vh;
+  padding-left: 6vw;          
+}
+
+.welcomeImage {
+  max-width: 600px;
+  width: 100%;
+  height: auto;
+}
+
+.loginButton {
+  margin-top: 32px;
+  margin-left: 55px;
+  background-color: #87ceeb;
+  border: none;
+  color: white;
+  font-weight: bold;
+  padding: 12px 30px;
+  border-radius: 20px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.loginButton:hover {
+  background-color: #5aa9c9;
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  min-width: 160px;
+  display: flex;
+  flex-direction: column;
+  background: #e3f2fd;
+  border-radius: 0 0 20px 20px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  z-index: 10;
+}
+
+.menuItem {
+  background: #5fc3e7;
+  color: white;
+  font-weight: bold;
+  border: none;
+  padding: 12px 0;
+  cursor: pointer;
+  font-size: 16px;
+  border-radius: 0;
+  transition: background 0.2s;
+}
+
+.menuItem:first-child {
+  background: #e3f2fd;
+  color: #3366cc;
+}
+
+.menuItem:hover {
+  background: #87ceeb;
+  color: #3366cc;
+}
+
+.dropdown .menu {
+  display: none;
+}
+
+.dropdown:hover .menu {
+  display: flex;
+}
+
+
+@media (max-width: 768px) {
+  .overlay {
+    bottom: 8%;
+    left: 5%;
+  }
+
+
+  .loginButton {
+    font-size: 14px;
+    padding: 10px 25px;
+  }
+}
