@@ -34,16 +34,18 @@
 
 .loginButton {
   margin-top: 32px;
-  margin-left: 55px;
-  background-color: #87ceeb;
+  margin-left: 50%;
+  width: 200px; 
+  background-color: #80BED5;
   border: none;
   color: white;
   font-weight: bold;
   padding: 12px 30px;
-  border-radius: 20px;
+  border-radius: 32px;
   font-size: 16px;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  display: block;
 }
 
 .loginButton:hover {
@@ -53,19 +55,23 @@
 .dropdown {
   position: relative;
   display: inline-block;
+  width: 200px; /* Igual al botón */
 }
 
 .menu {
   position: absolute;
+  margin-left: 50%;
   top: 100%;
   left: 0;
-  min-width: 160px;
+  width: 100%; 
+  min-width: unset;
   display: flex;
   flex-direction: column;
   background: #e3f2fd;
-  border-radius: 0 0 20px 20px;
+  border-radius: 15px 15px 32px 32px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.08);
   z-index: 10;
+  overflow: hidden;
 }
 
 .menuItem {
@@ -81,13 +87,13 @@
 }
 
 .menuItem:first-child {
-  background: #e3f2fd;
-  color: #3366cc;
+  background: #80BED5;
+  color: #f8f8f8;
 }
 
 .menuItem:hover {
-  background: #87ceeb;
-  color: #3366cc;
+  background: #389bc0;
+  color: #dbffac;
 }
 
 .dropdown .menu {
