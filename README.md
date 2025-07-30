@@ -23,10 +23,10 @@ npm -v
 npx create-next-app@latest arvi-vet-system --typescript --eslint --app --no-src-dir --import-alias "@/*"
 
 Selecciona lo siguiente durante la configuración interactiva:
-✔ Would you like to use Tailwind CSS? → No
-✔ Would you like to use `src/` directory? → No
-✔ Would you like to use experimental `app/` directory? → Yes
-✔ Would you like to use import alias? → Yes (usa @/*)
+- ✔ Would you like to use Tailwind CSS? → No
+- ✔ Would you like to use `src/` directory? → No
+- ✔ Would you like to use experimental `app/` directory? → Yes
+- ✔ Would you like to use import alias? → Yes (usa @/*)
 
 ### 2. Instalar las dependencias iniciales
 npm install
