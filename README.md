@@ -1,5 +1,20 @@
 # React + TypeScript + Vite
 
+--------------
+Para poder correr el proyecto es necesario tener instalado en el pc:
+npx create-next-app@latest arvi-vet-system --typescript --eslint --app --no-src-dir --import-alias "@/*"
+
+no
+yes
+
+y luego
+
+npm install lucide-react@0.263.1 --legacy-peer-deps
+
+--------------
+
+
+
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
 Currently, two official plugins are available:
