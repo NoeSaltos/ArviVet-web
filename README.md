@@ -44,18 +44,18 @@ Luego abre tu navegador en:
 http://localhost:3000
 
 ## Estructura del Proyecto
-arvi-vet-system/
-│
-├── app/               # Rutas y páginas del sistema (Next.js App Router)
-│   ├── page.tsx       # Página principal
-│   └── layout.tsx     # Layout general
-│
-├── public/            # Archivos estáticos
-├── styles/            # Estilos globales (si se usan)
-├── .eslintrc.json     # Configuración ESLint
-├── tsconfig.json      # Configuración TypeScript con alias "@/*"
-├── package.json       # Scripts y dependencias
-└── README.md          # Este documento
+- arvi-vet-system/
+- │
+- ├── app/               # Rutas y páginas del sistema (Next.js App Router)
+- │   ├── page.tsx       # Página principal
+- │   └── layout.tsx     # Layout general
+- │
+- ├── public/            # Archivos estáticos
+- ├── styles/            # Estilos globale (si se usan)
+- ├── .eslintrc.json     # Configuración ESLint
+- ├── tsconfig.json      # Configuración TypeScript con alias "@/*"
+- ├── package.json       # Scripts y dependencias
+- └── README.md          # Este documento
 
 ## 🧩 Dependencias principales 
    - Next.js
