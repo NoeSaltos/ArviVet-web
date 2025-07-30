@@ -348,14 +348,14 @@ body {
 
 .card-header {
   display: flex;
-  flex-direction: row;
-  justify-content: center;
+  flex-direction: column;
+  gap: 0.5rem;
   padding: 2rem;
   text-align: center;
 }
 
 .card-title {
-  font-size: 1.90rem;
+  font-size: 1.75rem;
   font-weight: 600;
   color: var(--color-white);
   line-height: 1.25;
@@ -452,7 +452,6 @@ body {
   text-decoration: none;
   position: relative;
   overflow: hidden;
-  
 }
 
 .button:focus-visible {
@@ -552,123 +551,6 @@ body {
   flex-shrink: 0;
 }
 
-/* Responsive design */
-@media (max-width: 1200px) {
-  .welcome-container {
-    padding: 2rem 3rem;
-  }
-
-  .welcome-title,
-  .welcome-subtitle {
-    font-size: 3.5rem;
-  }
-
-  .arvi-text,
-  .vet-text {
-    font-size: 3.5rem;
-  }
-}
-
-@media (max-width: 1024px) {
-  .welcome-container {
-    padding: 2rem;
-  }
-
-  .welcome-title,
-  .welcome-subtitle {
-    font-size: 3rem;
-  }
-
-  .arvi-text,
-  .vet-text {
-    font-size: 3rem;
-  }
-
-  .user-button {
-    padding: 1rem 2rem;
-    font-size: 1.1rem;
-  }
-}
-
-@media (max-width: 768px) {
-  .welcome-container {
-    padding: 1.5rem;
-    justify-content: center;
-    text-align: center;
-  }
-
-  .welcome-title,
-  .welcome-subtitle {
-    font-size: 2.5rem;
-  }
-
-  .arvi-text,
-  .vet-text {
-    font-size: 2.5rem;
-  }
-
-  .user-button {
-    padding: 1rem 1.8rem;
-    font-size: 1rem;
-  }
-
-  .brand-text {
-    font-size: 4rem;
-  }
-
-  .brand-logo {
-    left: 1rem;
-  }
-
-  .form-container {
-    padding: 1rem;
-  }
-
-  .card {
-    max-width: 100%;
-  }
-}
-
-@media (max-width: 480px) {
-  .welcome-container {
-    padding: 1rem;
-  }
-
-  .welcome-title,
-  .welcome-subtitle {
-    font-size: 2rem;
-  }
-
-  .arvi-text,
-  .vet-text {
-    font-size: 2rem;
-  }
-
-  .user-button {
-    padding: 0.875rem 1.5rem;
-    font-size: 0.95rem;
-    min-width: 150px;
-  }
-
-  .dropdown-item {
-    padding: 1rem 1.5rem;
-    font-size: 1rem;
-  }
-
-  .brand-text {
-    font-size: 3rem;
-  }
-
-  .card-header,
-  .card-content {
-    padding: 1.5rem;
-  }
-
-  .card-content {
-    padding-top: 0;
-  }
-}
-
 /* Utility classes */
 .sr-only {
   position: absolute;
@@ -726,5 +608,276 @@ body {
   }
   50% {
     opacity: 0.8;
+  }
+}
+
+/* Nuevos estilos para el Dashboard */
+.dashboard-container {
+  min-height: 100vh;
+  background-image: url("/images/fondo_home.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* Empuja el header y el contenido/botones a los extremos */
+  align-items: center; /* Centra el contenido horizontalmente */
+  padding: 2rem 4rem;
+  overflow: hidden;
+  color: var(--color-white);
+  text-align: center; /* Centra el texto por defecto */
+}
+
+.dashboard-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.4); /* Oscurece el fondo */
+  backdrop-filter: blur(1px); /* Ligero desenfoque */
+  z-index: 1;
+}
+
+.dashboard-header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-between; /* Espacio entre logo y botón de cerrar sesión */
+  align-items: center;
+  padding: 2rem 4rem;
+  z-index: 10;
+}
+
+.dashboard-logo {
+  height: 40px; /* Ajusta el tamaño del logo */
+  width: auto; /* Mantiene la proporción */
+  object-fit: contain;
+  filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.3));
+}
+
+.dashboard-content {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem; /* Espacio entre H1 y el bloque de saludo/rol */
+  margin-top: auto; /* Empuja el contenido hacia el centro/abajo */
+  margin-bottom: auto; /* Empuja el contenido hacia el centro/arriba */
+  animation: fadeInUp 0.8s ease-out;
+  max-width: 800px; /* Limita el ancho del texto para mejor lectura */
+  width: 100%;
+}
+
+.dashboard-welcome-text h1 {
+  font-size: 4.5rem; /* Tamaño de fuente grande para el título principal */
+  font-weight: 700;
+  line-height: 1.1;
+  text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.5);
+  margin-bottom: 0.5rem;
+  text-transform: uppercase; /* Mayúsculas como en el ejemplo */
+}
+
+.greeting-and-role {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem; /* Pequeño espacio entre el saludo y el rol */
+}
+
+.greeting-and-role p {
+  font-size: 2.2rem; /* Tamaño de fuente para el saludo y el rol */
+  font-weight: 500;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+.dashboard-buttons {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  flex-wrap: wrap; /* Permite que los botones se envuelvan en pantallas pequeñas */
+  gap: 1.5rem; /* Espacio entre los botones */
+  margin-top: 3rem; /* Espacio entre el texto de bienvenida y los botones */
+  width: 100%;
+  justify-content: center; /* Centra los botones horizontalmente */
+}
+
+.dashboard-button {
+  background: linear-gradient(135deg, var(--color-blue-500), var(--color-blue-600));
+  color: var(--color-white);
+  border: none;
+  padding: 1rem 2rem;
+  border-radius: var(--border-radius-full);
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition-all);
+  box-shadow: var(--shadow-lg);
+  text-decoration: none; /* Para que parezca un botón aunque sea un enlace */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  min-width: 200px; /* Ancho mínimo para los botones */
+  position: relative;
+  overflow: hidden;
+}
+
+.dashboard-button::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s;
+}
+
+.dashboard-button:hover::before {
+  left: 100%;
+}
+
+.dashboard-button:hover {
+  background: linear-gradient(135deg, var(--color-blue-600), var(--color-blue-700));
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-xl);
+}
+
+.dashboard-button:active {
+  transform: translateY(-1px);
+}
+
+.dashboard-logout-button {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: var(--color-white);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  padding: 0.75rem 1.5rem;
+  border-radius: var(--border-radius-full);
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: var(--transition-all);
+  z-index: 10;
+}
+
+.dashboard-logout-button:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  transform: translateY(-1px);
+}
+
+/* Responsive design para el Dashboard */
+@media (max-width: 1200px) {
+  .dashboard-container {
+    padding: 2rem 3rem;
+  }
+  .dashboard-header {
+    padding: 2rem 3rem;
+  }
+  .dashboard-welcome-text h1 {
+    font-size: 4rem;
+  }
+  .greeting-and-role p {
+    font-size: 2rem;
+  }
+  .dashboard-buttons {
+    gap: 1.2rem;
+  }
+  .dashboard-button {
+    min-width: 180px;
+    padding: 0.9rem 1.8rem;
+  }
+}
+
+@media (max-width: 1024px) {
+  .dashboard-container {
+    padding: 1.5rem 2rem;
+  }
+  .dashboard-header {
+    padding: 1.5rem 2rem;
+  }
+  .dashboard-logo {
+    height: 35px;
+  }
+  .dashboard-welcome-text h1 {
+    font-size: 3.5rem;
+  }
+  .greeting-and-role p {
+    font-size: 1.8rem;
+  }
+  .dashboard-buttons {
+    gap: 1rem;
+    justify-content: center;
+  }
+  .dashboard-button {
+    min-width: unset; /* Elimina el min-width para que se adapte mejor */
+    width: calc(50% - 0.5rem); /* Dos botones por fila */
+    max-width: 250px; /* Limita el ancho máximo */
+  }
+}
+
+@media (max-width: 768px) {
+  .dashboard-container {
+    padding: 1rem;
+  }
+  .dashboard-header {
+    flex-direction: column; /* Logo y botón de cerrar sesión en columna */
+    position: static; /* Quita el posicionamiento absoluto */
+    padding: 1rem;
+    margin-bottom: 2rem; /* Espacio entre header y contenido */
+  }
+  .dashboard-logout-button {
+    position: static; /* Quita el posicionamiento absoluto */
+    margin-top: 1rem; /* Espacio entre logo y botón */
+  }
+  .dashboard-logo {
+    height: 30px;
+  }
+  .dashboard-content {
+    margin-top: 0;
+    margin-bottom: 2rem;
+  }
+  .dashboard-welcome-text h1 {
+    font-size: 2.8rem;
+  }
+  .greeting-and-role p {
+    font-size: 1.5rem;
+  }
+  .dashboard-buttons {
+    flex-direction: column; /* Botones en una sola columna */
+    gap: 1rem;
+  }
+  .dashboard-button {
+    width: 100%; /* Ocupa todo el ancho disponible */
+    max-width: 300px; /* Limita el ancho máximo en móviles */
+    margin: 0 auto; /* Centra los botones */
+  }
+}
+
+@media (max-width: 480px) {
+  .dashboard-container {
+    padding: 0.75rem;
+  }
+  .dashboard-header {
+    padding: 0.75rem;
+  }
+  .dashboard-logo {
+    height: 25px;
+  }
+  .dashboard-welcome-text h1 {
+    font-size: 2rem;
+  }
+  .greeting-and-role p {
+    font-size: 1.2rem;
+  }
+  .dashboard-button {
+    padding: 0.8rem 1.2rem;
+    font-size: 0.9rem;
+  }
+  .dashboard-logout-button {
+    padding: 0.6rem 1.2rem;
+    font-size: 0.8rem;
   }
 }
