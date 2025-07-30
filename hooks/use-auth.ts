@@ -19,30 +19,19 @@ export function useAuth() {
       const result = await authService.login(credentials) // Llama al servicio de autenticación
 
       if (result.success) {
-        // Muestra un mensaje de bienvenida personalizado según el tipo de usuario
-        const userTypeText = credentials.userType === "administrativo" ? "Administrador" : "Veterinario"
-        alert(`¡Bienvenido ${userTypeText}! Acceso concedido al sistema ARVI VET.`)
-
-        // Limpia el tipo de usuario seleccionado del localStorage
+        // Redirige al dashboard inmediatamente después del login exitoso
+        // Mensaje de bienvenida eliminado (alert)
         if (typeof window !== "undefined") {
           localStorage.removeItem("selectedUserType")
         }
-
-        // Redirige al dashboard correspondiente (comentado para simulación)
-        if (credentials.userType === "administrativo") {
-          // router.push("/admin/dashboard")
-          console.log("Redirigiendo a dashboard administrativo...")
-        } else if (credentials.userType === "veterinario") {
-          // router.push("/vet/dashboard")
-          console.log("Redirigiendo a dashboard veterinario...")
-        }
+        router.push("/dashboard") // Redirige al dashboard
       } else {
-        // Muestra un mensaje de error si la autenticación falla
-        alert(result.error || "Error al iniciar sesión")
+        // Mensaje de error de credenciales inválidas eliminado (alert)
+        console.error("Login failed:", result.error || "Error al iniciar sesión")
       }
     } catch (error) {
-      // Maneja errores de conexión o inesperados
-      alert("Error de conexión. Intente nuevamente.")
+      // Mensaje de error de conexión eliminado (alert)
+      console.error("Connection error:", error)
       throw error // Propaga el error para que pueda ser manejado externamente si es necesario
     } finally {
       setIsLoading(false) // Desactiva el estado de carga al finalizar
@@ -53,10 +42,11 @@ export function useAuth() {
   const logout = async () => {
     try {
       await authService.logout() // Llama al servicio para cerrar sesión
-      alert("Sesión cerrada correctamente")
+      // Mensaje de sesión cerrada eliminado (alert)
       router.push("/") // Redirige a la página principal después de cerrar sesión
     } catch (error) {
-      alert("Error al cerrar sesión")
+      // Mensaje de error al cerrar sesión eliminado (alert)
+      console.error("Logout error:", error)
     }
   }
 
