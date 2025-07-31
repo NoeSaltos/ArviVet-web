@@ -1,4 +1,4 @@
-// File: C:\Users\JDC\Documents\GitHub\Proy_ing2\ArviVet-web\app\layout.tsx
+// File: C:\Users\dafne\Desktop\ArviVet-web\app\layout.tsx
 import * as entry from '../../../app/layout.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 

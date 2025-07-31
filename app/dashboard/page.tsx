@@ -1,52 +1,54 @@
-"use client" // Este es un Client Component porque usa hooks de React y localStorage
+"use client"; // Este es un Client Component porque usa hooks de React y localStorage
 
-import { useEffect, useState } from "react"
-import Image from "next/image" // Usamos el componente Image de Next.js para optimización [^2]
-import { useRouter } from "next/navigation" // Para redireccionar
-import { authService } from "@/services/auth-service" // Nuestro servicio de autenticación
+import { useEffect, useState } from "react";
+import Image from "next/image"; // Usamos el componente Image de Next.js para optimización [^2]
+import { useRouter } from "next/navigation"; // Para redireccionar
+import { authService } from "@/services/auth-service"; // Nuestro servicio de autenticación
 
 export default function DashboardPage() {
-  const router = useRouter()
-  const [greeting, setGreeting] = useState("")
+  const router = useRouter();
+  const [greeting, setGreeting] = useState("");
   // const [userName, setUserName] = useState("Usuario") // Eliminado, no se muestra en la imagen
-  const [userRole, setUserRole] = useState("")
+  const [userRole, setUserRole] = useState("");
 
   useEffect(() => {
     // Asegurarse de que el código se ejecute solo en el cliente
     if (typeof window !== "undefined") {
       // Verificar si el usuario está autenticado
       if (!authService.isAuthenticated()) {
-        router.push("/login") // Redirigir al login si no está autenticado
-        return
+        router.push("/login"); // Redirigir al login si no está autenticado
+        return;
       }
 
       // Obtener datos del usuario
       // const userData = authService.getUserData() // Eliminado, no se usa el nombre
-      const userType = authService.getUserType()
+      const userType = authService.getUserType();
 
       // if (userData) {
       //   setUserName(userData.name || "Usuario") // Eliminado
       // }
       if (userType) {
-        setUserRole(userType === "administrativo" ? "Administrador" : "Veterinario")
+        setUserRole(
+          userType === "administrativo" ? "Administrador" : "Veterinario"
+        );
       }
 
       // Determinar el saludo según la hora del día
-      const currentHour = new Date().getHours()
+      const currentHour = new Date().getHours();
       if (currentHour >= 5 && currentHour < 12) {
-        setGreeting("Buenos días!")
+        setGreeting("Buenos días!");
       } else if (currentHour >= 12 && currentHour < 19) {
-        setGreeting("Buenas tardes!")
+        setGreeting("Buenas tardes!");
       } else {
-        setGreeting("Buenas noches!")
+        setGreeting("Buenas noches!");
       }
     }
-  }, [router]) // Dependencia del router para evitar warnings
+  }, [router]); // Dependencia del router para evitar warnings
 
   const handleLogout = async () => {
-    await authService.logout()
-    router.push("/") // Redirigir a la página de selección de usuario o login
-  }
+    await authService.logout();
+    router.push("/"); // Redirigir a la página de selección de usuario o login
+  };
 
   // Botones de navegación condicionales
   const adminButtons = [
@@ -54,19 +56,21 @@ export default function DashboardPage() {
     { label: "Historial de pacientes", href: "/dashboard/patients" },
     { label: "Personal medico", href: "/dashboard/staff" },
     { label: "Pagos registrados", href: "/dashboard/payments" },
-  ]
+  ];
 
   const vetButtons = [
     { label: "Calendario de consultas", href: "/dashboard/calendar" },
     { label: "Historial de pacientes", href: "/dashboard/patients" },
     { label: "Personal medico", href: "/dashboard/staff" },
-  ]
+  ];
 
-  const buttonsToShow = userRole === "Administrador" ? adminButtons : vetButtons
+  const buttonsToShow =
+    userRole === "Administrador" ? adminButtons : vetButtons;
 
   return (
     <main className="dashboard-container">
-      <div className="dashboard-overlay" /> {/* Capa de superposición para el fondo */}
+      <div className="dashboard-overlay" />{" "}
+      {/* Capa de superposición para el fondo */}
       {/* Header con el logo y botón de cerrar sesión */}
       <header className="dashboard-header">
         <Image
@@ -102,5 +106,5 @@ export default function DashboardPage() {
         ))}
       </nav>
     </main>
-  )
+  );
 }
