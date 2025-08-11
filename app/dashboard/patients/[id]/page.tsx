@@ -5,92 +5,15 @@ import { useState, useEffect } from "react";
 import { useRouter, useParams } from "next/navigation";
 import { ArrowLeft, Calendar, User, Heart, Activity } from "lucide-react";
 import { authService } from "@/services/auth-service";
-
-// Datos mock del historial médico
-const mockMedicalHistory = {
-  1: {
-    pet: {
-      name: "Kony",
-      species: "Gato",
-      breed: "Persa",
-      age: "2 años",
-      weight: "4.2 kg",
-      owner: "María García",
-      phone: "+593 99 123 4567",
-      email: "maria.garcia@email.com",
-    },
-    visits: [
-      {
-        id: 1,
-        date: "2024-01-15",
-        type: "Consulta General",
-        veterinarian: "Dr. Ana Veterinaria",
-        diagnosis: "Chequeo rutinario",
-        treatment: "Vacuna antirrábica aplicada",
-        notes:
-          "Mascota en excelente estado de salud. Se recomienda próxima visita en 6 meses.",
-        weight: "4.2 kg",
-        temperature: "38.5°C",
-      },
-      {
-        id: 2,
-        date: "2023-12-10",
-        type: "Tratamiento",
-        veterinarian: "Dr. Carlos Administrador",
-        diagnosis: "Infección ocular leve",
-        treatment: "Gotas oftálmicas - 3 veces al día por 7 días",
-        notes:
-          "Mejoría notable después del tratamiento. Ojos claros y sin secreción.",
-        weight: "4.0 kg",
-        temperature: "38.2°C",
-      },
-      {
-        id: 3,
-        date: "2023-08-22",
-        type: "Cirugía",
-        veterinarian: "Dr. Ana Veterinaria",
-        diagnosis: "Esterilización",
-        treatment: "Ovariohisterectomía exitosa",
-        notes:
-          "Procedimiento sin complicaciones. Recuperación excelente en 10 días.",
-        weight: "3.8 kg",
-        temperature: "38.0°C",
-      },
-    ],
-  },
-  // Datos para otras mascotas...
-  2: {
-    pet: {
-      name: "Mica",
-      species: "Gato",
-      breed: "Maine Coon",
-      age: "3 años",
-      weight: "6.5 kg",
-      owner: "Carlos López",
-      phone: "+593 99 234 5678",
-      email: "carlos.lopez@email.com",
-    },
-    visits: [
-      {
-        id: 1,
-        date: "2024-01-20",
-        type: "Consulta General",
-        veterinarian: "Dr. Ana Veterinaria",
-        diagnosis: "Control de peso",
-        treatment: "Dieta especializada recomendada",
-        notes: "Leve sobrepeso. Se estableció plan nutricional.",
-        weight: "6.5 kg",
-        temperature: "38.8°C",
-      },
-    ],
-  },
-};
+import { petsService } from "@/services/pets-service";
+import { PatientHistory } from "@/types/database";
 
 export default function PatientDetailPage() {
   const router = useRouter();
   const params = useParams();
-  const [patientData, setPatientData] = useState<any>(null);
+  const [patientData, setPatientData] = useState<PatientHistory | null>(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     // Verificar autenticación
@@ -100,23 +23,78 @@ export default function PatientDetailPage() {
     }
 
     // Cargar datos del paciente
-    const petId = parseInt(params.id as string);
-    const data = mockMedicalHistory[petId as keyof typeof mockMedicalHistory];
-
-    if (data) {
-      setPatientData(data);
-    }
-    setLoading(false);
+    loadPatientData();
   }, [router, params.id]);
+
+  const loadPatientData = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      const petId = parseInt(params.id as string);
+
+      if (isNaN(petId)) {
+        setError("ID de paciente inválido");
+        return;
+      }
+
+      const data = await petsService.getPatientHistory(petId);
+      setPatientData(data);
+    } catch (err) {
+      setError("Error al cargar los datos del paciente");
+      console.error("Error loading patient data:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleBackToPatients = () => {
     router.push("/dashboard/patients");
   };
 
+  const calculateAge = (birthDate: string): string => {
+    const birth = new Date(birthDate);
+    const today = new Date();
+    const diffTime = Math.abs(today.getTime() - birth.getTime());
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+    if (diffDays < 365) {
+      const months = Math.floor(diffDays / 30);
+      return months > 0
+        ? `${months} ${months === 1 ? "mes" : "meses"}`
+        : `${diffDays} días`;
+    } else {
+      const years = Math.floor(diffDays / 365);
+      return `${years} ${years === 1 ? "año" : "años"}`;
+    }
+  };
+
   if (loading) {
     return (
       <main className="patient-detail-container">
-        <div className="loading-message">Cargando...</div>
+        <div className="patient-detail-overlay" />
+        <div className="loading-message">
+          <p>Cargando datos del paciente...</p>
+        </div>
+      </main>
+    );
+  }
+
+  if (error) {
+    return (
+      <main className="patient-detail-container">
+        <div className="patient-detail-overlay" />
+        <div className="error-message">
+          <p>{error}</p>
+          <button onClick={loadPatientData} className="retry-button">
+            Reintentar
+          </button>
+          <button
+            onClick={handleBackToPatients}
+            className="back-to-patients-btn"
+          >
+            Volver a Pacientes
+          </button>
+        </div>
       </main>
     );
   }
@@ -124,6 +102,7 @@ export default function PatientDetailPage() {
   if (!patientData) {
     return (
       <main className="patient-detail-container">
+        <div className="patient-detail-overlay" />
         <div className="error-message">
           <p>Paciente no encontrado</p>
           <button
@@ -158,13 +137,23 @@ export default function PatientDetailPage() {
       <div className="patient-detail-content">
         {/* Información del paciente */}
         <div className="patient-info-card">
-          <div className="patient-avatar">{patientData.pet.name.charAt(0)}</div>
+          <div className="patient-avatar">
+            {patientData.pet.pic ? (
+              <img
+                src={patientData.pet.pic}
+                alt={patientData.pet.name}
+                className="patient-image"
+              />
+            ) : (
+              patientData.pet.name.charAt(0)
+            )}
+          </div>
           <div className="patient-basic-info">
             <h2 className="patient-name">{patientData.pet.name}</h2>
             <div className="patient-details-grid">
               <div className="detail-item">
-                <span className="detail-label">Especie:</span>
-                <span className="detail-value">{patientData.pet.species}</span>
+                <span className="detail-label">Sexo:</span>
+                <span className="detail-value">{patientData.pet.sex}</span>
               </div>
               <div className="detail-item">
                 <span className="detail-label">Raza:</span>
@@ -172,94 +161,131 @@ export default function PatientDetailPage() {
               </div>
               <div className="detail-item">
                 <span className="detail-label">Edad:</span>
-                <span className="detail-value">{patientData.pet.age}</span>
+                <span className="detail-value">
+                  {calculateAge(patientData.pet.birth_date)}
+                </span>
               </div>
               <div className="detail-item">
                 <span className="detail-label">Peso actual:</span>
-                <span className="detail-value">{patientData.pet.weight}</span>
+                <span className="detail-value">
+                  {patientData.pet.weigth} kg
+                </span>
               </div>
+              <div className="detail-item">
+                <span className="detail-label">País de origen:</span>
+                <span className="detail-value">
+                  {patientData.pet.country_origin}
+                </span>
+              </div>
+              {patientData.pet.sterilization_date && (
+                <div className="detail-item">
+                  <span className="detail-label">Fecha de esterilización:</span>
+                  <span className="detail-value">
+                    {new Date(
+                      patientData.pet.sterilization_date
+                    ).toLocaleDateString("es-ES")}
+                  </span>
+                </div>
+              )}
             </div>
           </div>
         </div>
 
         {/* Información del dueño */}
-        <div className="owner-info-card">
-          <h3 className="section-title">
-            <User className="section-icon" />
-            Información del Dueño
-          </h3>
-          <div className="owner-details">
-            <p>
-              <strong>Nombre:</strong> {patientData.pet.owner}
-            </p>
-            <p>
-              <strong>Teléfono:</strong> {patientData.pet.phone}
-            </p>
-            <p>
-              <strong>Email:</strong> {patientData.pet.email}
-            </p>
+        {patientData.pet.users && (
+          <div className="owner-info-card">
+            <h3 className="section-title">
+              <User className="section-icon" />
+              Información del Dueño
+            </h3>
+            <div className="owner-details">
+              <p>
+                <strong>Nombre:</strong> {patientData.pet.users.nombre}
+              </p>
+              {patientData.pet.users.telefono && (
+                <p>
+                  <strong>Teléfono:</strong> {patientData.pet.users.telefono}
+                </p>
+              )}
+              {patientData.pet.users.correo && (
+                <p>
+                  <strong>Email:</strong> {patientData.pet.users.correo}
+                </p>
+              )}
+            </div>
           </div>
-        </div>
+        )}
 
-        {/* Historial de visitas */}
+        {/* Historial de citas */}
         <div className="visits-section">
           <h3 className="section-title">
             <Activity className="section-icon" />
-            Historial de Visitas
+            Historial de Citas
           </h3>
 
           <div className="visits-timeline">
-            {patientData.visits.map((visit: any, index: number) => (
-              <div key={visit.id} className="visit-card">
-                <div className="visit-header">
-                  <div className="visit-date">
-                    <Calendar className="date-icon" />
-                    {new Date(visit.date).toLocaleDateString("es-ES", {
-                      year: "numeric",
-                      month: "long",
-                      day: "numeric",
-                    })}
+            {patientData.appointments.length > 0 ? (
+              patientData.appointments.map((appointment, index: number) => (
+                <div key={appointment.id} className="visit-card">
+                  <div className="visit-header">
+                    <div className="visit-date">
+                      <Calendar className="date-icon" />
+                      {new Date(appointment.date).toLocaleDateString("es-ES", {
+                        year: "numeric",
+                        month: "long",
+                        day: "numeric",
+                      })}
+                      <span className="visit-time">
+                        {appointment.hour.substring(0, 5)}
+                      </span>
+                    </div>
+                    <span
+                      className={`visit-type visit-type-${appointment.status
+                        .toLowerCase()
+                        .replace(" ", "-")}`}
+                    >
+                      {appointment.status}
+                    </span>
                   </div>
-                  <span
-                    className={`visit-type visit-type-${visit.type
-                      .toLowerCase()
-                      .replace(" ", "-")}`}
-                  >
-                    {visit.type}
-                  </span>
+
+                  <div className="visit-content">
+                    <div className="visit-info-grid">
+                      <div className="visit-detail">
+                        <strong>Veterinario:</strong> {appointment.vet?.name || 'No asignado'}
+                      </div>
+                      {appointment.speciality && (
+                        <div className="visit-detail">
+                          <strong>Especialidad:</strong> {appointment.speciality.name}
+                        </div>
+                      )}
+                      <div className="visit-detail">
+                        <strong>Sucursal:</strong> {appointment.branch?.direction || 'No especificada'}
+                      </div>
+                      <div className="visit-detail">
+                        <strong>Duración:</strong> {appointment.duration_minutes || 20} minutos
+                      </div>
+                    </div>
+
+                    {appointment.branch?.telephone && (
+                      <div className="branch-info">
+                        <strong>Teléfono sucursal:</strong> {appointment.branch.telephone}
+                      </div>
+                    )}
+
+                    {appointment.speciality?.description && (
+                      <div className="speciality-description">
+                        <strong>Sobre la especialidad:</strong>
+                        <p>{appointment.speciality.description}</p>
+                      </div>
+                    )}
+                  </div>
                 </div>
-
-                <div className="visit-content">
-                  <div className="visit-info-grid">
-                    <div className="visit-detail">
-                      <strong>Veterinario:</strong> {visit.veterinarian}
-                    </div>
-                    <div className="visit-detail">
-                      <strong>Diagnóstico:</strong> {visit.diagnosis}
-                    </div>
-                    <div className="visit-detail">
-                      <strong>Tratamiento:</strong> {visit.treatment}
-                    </div>
-                  </div>
-
-                  <div className="vital-signs">
-                    <div className="vital-sign">
-                      <Heart className="vital-icon" />
-                      <span>Peso: {visit.weight}</span>
-                    </div>
-                    <div className="vital-sign">
-                      <Activity className="vital-icon" />
-                      <span>Temperatura: {visit.temperature}</span>
-                    </div>
-                  </div>
-
-                  <div className="visit-notes">
-                    <strong>Notas:</strong>
-                    <p>{visit.notes}</p>
-                  </div>
-                </div>
+              ))
+            ) : (
+              <div className="no-appointments">
+                <p>No hay citas registradas para esta mascota.</p>
               </div>
-            ))}
+            )}
           </div>
         </div>
       </div>

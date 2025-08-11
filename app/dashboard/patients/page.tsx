@@ -5,105 +5,16 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Search, ArrowLeft } from "lucide-react";
 import { authService } from "@/services/auth-service";
-
-// Datos mock de las mascotas
-const mockPets = [
-  {
-    id: 1,
-    name: "Kony",
-    image: "/images/pets/kony.jpg",
-    status: "Tratamiento",
-    owner: "María García",
-    species: "Gato",
-    breed: "Persa",
-    age: "2 años",
-  },
-  {
-    id: 2,
-    name: "Mica",
-    image: "/images/pets/mica.jpg",
-    status: "Tratamiento",
-    owner: "Carlos López",
-    species: "Gato",
-    breed: "Maine Coon",
-    age: "3 años",
-  },
-  {
-    id: 3,
-    name: "Perla",
-    image: "/images/pets/perla.jpg",
-    status: "Tratamiento",
-    owner: "Ana Martínez",
-    species: "Perro",
-    breed: "Golden Retriever",
-    age: "5 años",
-  },
-  {
-    id: 4,
-    name: "Teo",
-    image: "/images/pets/teo.jpg",
-    status: "Tratamiento",
-    owner: "Luis Rodríguez",
-    species: "Perro",
-    breed: "Pug",
-    age: "4 años",
-  },
-  {
-    id: 5,
-    name: "Oso",
-    image: "/images/pets/oso.jpg",
-    status: "Tratamiento",
-    owner: "Patricia Silva",
-    species: "Perro",
-    breed: "Golden Retriever",
-    age: "1 año",
-  },
-  {
-    id: 6,
-    name: "Chiqui",
-    image: "/images/pets/chiqui.jpg",
-    status: "Tratamiento",
-    owner: "Roberto Díaz",
-    species: "Gato",
-    breed: "Británico",
-    age: "6 años",
-  },
-  {
-    id: 7,
-    name: "Firu",
-    image: "/images/pets/firu.jpg",
-    status: "Tratamiento",
-    owner: "Carmen Ruiz",
-    species: "Perro",
-    breed: "Mastín",
-    age: "8 meses",
-  },
-  {
-    id: 8,
-    name: "Luna",
-    image: "/images/pets/luna.jpg",
-    status: "Tratamiento",
-    owner: "Miguel Torres",
-    species: "Gato",
-    breed: "Siamés",
-    age: "4 años",
-  },
-  {
-    id: 9,
-    name: "Koty",
-    image: "/images/pets/koty.jpg",
-    status: "Tratamiento",
-    owner: "Elena Vásquez",
-    species: "Gato",
-    breed: "Ragdoll",
-    age: "3 años",
-  },
-];
+import { petsService } from "@/services/pets-service";
+import { PetWithOwner } from "@/types/database";
 
 export default function PatientsPage() {
   const router = useRouter();
   const [searchTerm, setSearchTerm] = useState("");
-  const [filteredPets, setFilteredPets] = useState(mockPets);
+  const [pets, setPets] = useState<PetWithOwner[]>([]);
+  const [filteredPets, setFilteredPets] = useState<PetWithOwner[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     // Verificar autenticación
@@ -111,19 +22,43 @@ export default function PatientsPage() {
       router.push("/login");
       return;
     }
+
+    // Cargar mascotas desde Supabase
+    loadPets();
   }, [router]);
+
+  const loadPets = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      const petsData = await petsService.getAllPets();
+      setPets(petsData);
+      setFilteredPets(petsData);
+    } catch (err) {
+      setError("Error al cargar las mascotas");
+      console.error("Error loading pets:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   // Filtrar mascotas por término de búsqueda
   useEffect(() => {
-    const filtered = mockPets.filter(
+    if (!searchTerm.trim()) {
+      setFilteredPets(pets);
+      return;
+    }
+
+    const filtered = pets.filter(
       (pet) =>
         pet.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        pet.owner.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        pet.species.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        (pet.users?.nombre || "")
+          .toLowerCase()
+          .includes(searchTerm.toLowerCase()) ||
         pet.breed.toLowerCase().includes(searchTerm.toLowerCase())
     );
     setFilteredPets(filtered);
-  }, [searchTerm]);
+  }, [searchTerm, pets]);
 
   const handlePetClick = (petId: number) => {
     router.push(`/dashboard/patients/${petId}`);
@@ -132,6 +67,48 @@ export default function PatientsPage() {
   const handleBackToDashboard = () => {
     router.push("/dashboard");
   };
+
+  const calculateAge = (birthDate: string): string => {
+    const birth = new Date(birthDate);
+    const today = new Date();
+    const diffTime = Math.abs(today.getTime() - birth.getTime());
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+    if (diffDays < 365) {
+      const months = Math.floor(diffDays / 30);
+      return months > 0
+        ? `${months} ${months === 1 ? "mes" : "meses"}`
+        : `${diffDays} días`;
+    } else {
+      const years = Math.floor(diffDays / 365);
+      return `${years} ${years === 1 ? "año" : "años"}`;
+    }
+  };
+
+  if (loading) {
+    return (
+      <main className="patients-container">
+        <div className="patients-overlay" />
+        <div className="loading-message">
+          <p>Cargando mascotas...</p>
+        </div>
+      </main>
+    );
+  }
+
+  if (error) {
+    return (
+      <main className="patients-container">
+        <div className="patients-overlay" />
+        <div className="error-message">
+          <p>{error}</p>
+          <button onClick={loadPets} className="retry-button">
+            Reintentar
+          </button>
+        </div>
+      </main>
+    );
+  }
 
   return (
     <main className="patients-container">
@@ -173,24 +150,30 @@ export default function PatientsPage() {
           >
             <div className="pet-image-container">
               <div className="pet-image-placeholder">
-                {/* Placeholder para la imagen */}
-                <div className="pet-avatar">{pet.name.charAt(0)}</div>
+                {pet.pic ? (
+                  <img src={pet.pic} alt={pet.name} className="pet-image" />
+                ) : (
+                  <div className="pet-avatar">{pet.name.charAt(0)}</div>
+                )}
               </div>
-              <span className="pet-status">{pet.status}</span>
+              <span className="pet-status">Activo</span>
             </div>
             <div className="pet-info">
               <h3 className="pet-name">{pet.name}</h3>
               <p className="pet-details">
-                {pet.species} • {pet.breed}
+                {pet.sex} • {pet.breed}
               </p>
-              <p className="pet-owner">Dueño: {pet.owner}</p>
-              <p className="pet-age">Edad: {pet.age}</p>
+              <p className="pet-owner">
+                Dueño: {pet.users?.nombre || "No asignado"}
+              </p>
+              <p className="pet-age">Edad: {calculateAge(pet.birth_date)}</p>
+              <p className="pet-weight">Peso: {pet.weigth} kg</p>
             </div>
           </div>
         ))}
       </div>
 
-      {filteredPets.length === 0 && (
+      {!loading && filteredPets.length === 0 && (
         <div className="no-results">
           <p>No se encontraron mascotas que coincidan con tu búsqueda.</p>
         </div>
