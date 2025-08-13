@@ -8,7 +8,7 @@ import { authService } from "@/services/auth-service" // Nuestro servicio de aut
 export default function DashboardPage() {
   const router = useRouter()
   const [greeting, setGreeting] = useState("")
-  // const [userName, setUserName] = useState("Usuario") // Eliminado, no se muestra en la imagen
+  const [userName, setUserName] = useState("")
   const [userRole, setUserRole] = useState("")
 
   useEffect(() => {
@@ -21,18 +21,20 @@ export default function DashboardPage() {
       }
 
       // Obtener datos del usuario
-      // const userData = authService.getUserData() // Eliminado, no se usa el nombre
       const userType = authService.getUserType()
+      const userData = authService.getUserData()
 
-      // if (userData) {
-      //   setUserName(userData.name || "Usuario") // Eliminado
-      // }
-      if (userType) {
+      if (userType && userData) {
+        setUserName(userData.name)
         setUserRole(userType === "administrativo" ? "Administrador" : "Veterinario")
       }
 
-      // Determinar el saludo según la hora del día
-      const currentHour = new Date().getHours()
+      // Determinar el saludo según la hora del día en zona horaria de Guayaquil
+      const guayaquilTime = new Date().toLocaleString("en-US", {
+        timeZone: "America/Guayaquil"
+      })
+      const currentHour = new Date(guayaquilTime).getHours()
+      
       if (currentHour >= 5 && currentHour < 12) {
         setGreeting("Buenos días!")
       } else if (currentHour >= 12 && currentHour < 19) {
@@ -52,14 +54,13 @@ export default function DashboardPage() {
   const adminButtons = [
     { label: "Calendario de consultas", href: "/dashboard/calendar" },
     { label: "Historial de pacientes", href: "/dashboard/patients" },
-    { label: "Personal medico", href: "/dashboard/staff" },
-    { label: "Pagos registrados", href: "/dashboard/payments" },
+    { label: "Personal médico", href: "/dashboard/staff" },
   ]
 
   const vetButtons = [
     { label: "Calendario de consultas", href: "/dashboard/calendar" },
     { label: "Historial de pacientes", href: "/dashboard/patients" },
-    { label: "Personal medico", href: "/dashboard/staff" },
+    { label: "Personal médico", href: "/dashboard/staff" },
   ]
 
   const buttonsToShow = userRole === "Administrador" ? adminButtons : vetButtons
@@ -72,35 +73,45 @@ export default function DashboardPage() {
         <Image
           src="/images/logo_home.png"
           alt="Arvivet Clínica Veterinaria Logo"
-          width={200} // Ancho de la imagen
-          height={40} // Alto de la imagen
+          width={200}
+          height={48}
           className="dashboard-logo"
-          priority // Carga la imagen con alta prioridad [^2]
+          priority
         />
         <button onClick={handleLogout} className="dashboard-logout-button">
           Cerrar Sesión
         </button>
       </header>
-      {/* Contenido principal de bienvenida */}
-      <section className="dashboard-content">
-        <div className="dashboard-welcome-text">
-          <h1>BIENVENIDO AL SISTEMA ARVISOFT</h1>
+      {/* Contenedor principal que engloba texto y botones */}
+      <section className="dashboard-main-content">
+        {/* Contenedor de textos */}
+        <div className="dashboard-text-content">
+          <div className="dashboard-welcome-text">
+            <h1>BIENVENIDO AL SISTEMA ARVISOFT</h1>
+          </div>
           <div className="greeting-and-role">
-            {" "}
-            {/* Nuevo contenedor para el saludo y el rol */}
-            <p>{greeting}</p>
-            <p>{userRole}</p>
+            <p className="greeting-text">{greeting}</p>
+            <p className="role-text">{userName}</p>
           </div>
         </div>
+
+        {/* Contenedor de botones */}
+        <div className="dashboard-buttons-container">
+          <nav className="dashboard-buttons" role="navigation" aria-label="Navegación principal">
+            {buttonsToShow.map((button) => (
+              <a 
+                key={button.label} 
+                href={button.href} 
+                className="dashboard-button"
+                role="button"
+                tabIndex={0}
+              >
+                {button.label}
+              </a>
+            ))}
+          </nav>
+        </div>
       </section>
-      {/* Botones de navegación */}
-      <nav className="dashboard-buttons">
-        {buttonsToShow.map((button) => (
-          <a key={button.label} href={button.href} className="dashboard-button">
-            {button.label}
-          </a>
-        ))}
-      </nav>
     </main>
   )
 }
