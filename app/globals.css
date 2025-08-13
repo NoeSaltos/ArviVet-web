@@ -621,11 +621,12 @@ body {
   position: relative;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
-  align-items: stretch;
-  padding: 0;
+  justify-content: space-between; /* Empuja el header y el contenido/botones a los extremos */
+  align-items: center; /* Centra el contenido horizontalmente */
+  padding: 2rem 4rem;
   overflow: hidden;
-  color: #FFFFFF;
+  color: var(--color-white);
+  text-align: center; /* Centra el texto por defecto */
 }
 
 .dashboard-overlay {
@@ -634,7 +635,8 @@ body {
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 40, 70, 0.35);
+  background: rgba(0, 0, 0, 0.4); /* Oscurece el fondo */
+  backdrop-filter: blur(1px); /* Ligero desenfoque */
   z-index: 1;
 }
 
@@ -644,154 +646,104 @@ body {
   left: 0;
   width: 100%;
   display: flex;
-  justify-content: space-between;
+  justify-content: space-between; /* Espacio entre logo y botón de cerrar sesión */
   align-items: center;
-  padding: 20px 32px 20px 28px;
+  padding: 2rem 4rem;
   z-index: 10;
 }
 
 .dashboard-logo {
-  height: 48px;
-  width: auto;
+  height: 40px; /* Ajusta el tamaño del logo */
+  width: auto; /* Mantiene la proporción */
   object-fit: contain;
   filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.3));
-  image-rendering: -webkit-optimize-contrast;
-  image-rendering: crisp-edges;
 }
 
-.dashboard-main-content {
-  position: absolute;
-  top: 50%;
-  left: 0;
-  right: 0;
-  transform: translateY(-35%);
+.dashboard-content {
+  position: relative;
   z-index: 10;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 2rem;
+  gap: 1.5rem; /* Espacio entre H1 y el bloque de saludo/rol */
+  margin-top: auto; /* Empuja el contenido hacia el centro/abajo */
+  margin-bottom: auto; /* Empuja el contenido hacia el centro/arriba */
   animation: fadeInUp 0.8s ease-out;
-  padding: 0 2rem;
-}
-
-.dashboard-text-content {
-  position: relative;
-  top: auto;
-  left: auto;
-  right: 8%;
-  transform: none;
-  z-index: inherit;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 0;
-  max-width: 800px;
-  width: auto;
-  text-align: left;
-}
-
-.dashboard-buttons-container {
-  position: relative;
-  top: auto;
-  left: auto;
-  right: auto;
-  transform: none;
-  z-index: inherit;
-  display: flex;
-  justify-content: center;
-  padding: 0;
+  max-width: 800px; /* Limita el ancho del texto para mejor lectura */
+  width: 100%;
 }
 
 .dashboard-welcome-text h1 {
-  font-size: clamp(48px, 8vw, 80px);
-  font-weight: 900;
-  line-height: 0.95;
-  letter-spacing: -1px;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-  margin: 0;
-  text-transform: uppercase;
-  color: #FFFFFF;
+  font-size: 4.5rem; /* Tamaño de fuente grande para el título principal */
+  font-weight: 700;
+  line-height: 1.1;
+  text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.5);
+  margin-bottom: 0.5rem;
+  text-transform: uppercase; /* Mayúsculas como en el ejemplo */
 }
 
 .greeting-and-role {
   display: flex;
   flex-direction: column;
-  gap: 0;
-  align-items: flex-start;
-  margin-top: 16px;
+  gap: 0.25rem; /* Pequeño espacio entre el saludo y el rol */
 }
 
-.greeting-text {
-  font-size: clamp(50px, 4vw, 45px);
-  font-weight: 700;
-  color: #FFFFFF;
-  line-height: 1.2;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
-  margin: 0;
-}
-
-.role-text {
-  font-size: clamp(42px, 3.5vw, 38px);
-  font-weight: 300;
-  color: rgba(255, 255, 255, 0.9);
-  letter-spacing: 0;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
-  margin: 4px 0 0 0;
+.greeting-and-role p {
+  font-size: 2.2rem; /* Tamaño de fuente para el saludo y el rol */
+  font-weight: 500;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
 }
 
 .dashboard-buttons {
+  position: relative;
+  z-index: 10;
   display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  gap: 20px;
-  justify-content: center;
-  align-items: center;
-  max-width: 1200px;
+  flex-wrap: wrap; /* Permite que los botones se envuelvan en pantallas pequeñas */
+  gap: 1.5rem; /* Espacio entre los botones */
+  margin-top: 3rem; /* Espacio entre el texto de bienvenida y los botones */
   width: 100%;
+  justify-content: center; /* Centra los botones horizontalmente */
 }
 
 .dashboard-button {
-  background: #FFFFFF;
-  color: #1F2937;
+  background: linear-gradient(135deg, var(--color-blue-500), var(--color-blue-600));
+  color: var(--color-white);
   border: none;
-  padding: 20px 32px;
-  border-radius: 9999px;
-  font-size: 1.2rem;
+  padding: 1rem 2rem;
+  border-radius: var(--border-radius-full);
+  font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.18);
-  text-decoration: none;
+  transition: var(--transition-all);
+  box-shadow: var(--shadow-lg);
+  text-decoration: none; /* Para que parezca un botón aunque sea un enlace */
   display: inline-flex;
   align-items: center;
   justify-content: center;
   white-space: nowrap;
-  min-width: 220px;
+  min-width: 200px; /* Ancho mínimo para los botones */
   position: relative;
-  outline: none;
-  line-height: 1.2;
+  overflow: hidden;
+}
+
+.dashboard-button::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s;
+}
+
+.dashboard-button:hover::before {
+  left: 100%;
 }
 
 .dashboard-button:hover {
-  background: #22c55e;
-  color: #FFFFFF;
+  background: linear-gradient(135deg, var(--color-blue-600), var(--color-blue-700));
   transform: translateY(-3px);
-  box-shadow: 0 8px 20px rgba(34, 197, 94, 0.4);
-}
-
-.dashboard-button:active {
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-}
-
-.dashboard-button:focus-visible {
-  outline: 2px solid #60A5FA;
-  outline-offset: 2px;
-}
-
-.dashboard-button:focus {
-  outline: 2px solid #FFFFFF;
-  outline-offset: 2px;
+  box-shadow: var(--shadow-xl);
 }
 
 .dashboard-button:active {
@@ -799,1911 +751,133 @@ body {
 }
 
 .dashboard-logout-button {
-  background: rgba(255, 255, 255, 0.94);
-  color: #0F172A;
-  border: none;
-  padding: 0 22px;
-  border-radius: 9999px;
-  font-size: 14px;
-  font-weight: 600;
+  background-color: rgba(255, 255, 255, 0.1);
+  color: var(--color-white);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  padding: 0.75rem 1.5rem;
+  border-radius: var(--border-radius-full);
+  font-size: 0.9rem;
+  font-weight: 500;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: var(--transition-all);
   z-index: 10;
-  height: 42px;
-  display: flex;
-  align-items: center;
-  outline: none;
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
 }
 
 .dashboard-logout-button:hover {
-  background: #ef4444;
-  color: #FFFFFF;
-  box-shadow: 0 10px 24px rgba(239, 68, 68, 0.4);
-  transform: translateY(-2px);
-}
-
-.dashboard-logout-button:focus-visible {
-  outline: 2px solid #93C5FD;
-  outline-offset: 2px;
+  background-color: rgba(255, 255, 255, 0.2);
+  transform: translateY(-1px);
 }
 
 /* Responsive design para el Dashboard */
-/* Pantallas ≥1280px - referencia exacta */
-@media (min-width: 1280px) {
+@media (max-width: 1200px) {
+  .dashboard-container {
+    padding: 2rem 3rem;
+  }
   .dashboard-header {
-    padding: 20px 32px 20px 28px;
-  }
-  .dashboard-logo {
-    position: relative;
-    left: 3%;
-    height: 75px;
-    width: auto;
-  }
-  .dashboard-logout-button {
-    height: 42px;
-    padding: 0 22px;
-    font-size: 14px;
-  }
-  .dashboard-main-content {
-    top: 50%;
-    gap: 2.5rem;
-  }
-  .dashboard-buttons {
-    gap: 24px;
-    flex-direction: row;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: center;
-    max-width: 1200px;
-  }
-  .dashboard-button {
-    padding: 22px 36px;
-    font-size: 1.3rem;
-    min-width: 240px;
-  }
-}
-
-/* Pantallas 768-1279px - mantener proporciones */
-@media (max-width: 1279px) and (min-width: 768px) {
-  .dashboard-header {
-    padding: 18px 28px 18px 24px;
-  }
-  .dashboard-logo {
-    height: 44px;
-  }
-  .dashboard-logout-button {
-    height: 38px;
-    padding: 0 18px;
-    font-size: 13px;
-  }
-  .dashboard-main-content {
-    top: 48%;
-    gap: 2rem;
+    padding: 2rem 3rem;
   }
   .dashboard-welcome-text h1 {
-    font-size: clamp(40px, 7vw, 68px);
+    font-size: 4rem;
   }
-  .greeting-text {
-    font-size: clamp(18px, 2.5vw, 24px);
-  }
-  .role-text {
-    font-size: clamp(14px, 2vw, 20px);
+  .greeting-and-role p {
+    font-size: 2rem;
   }
   .dashboard-buttons {
-    gap: 18px;
-    flex-direction: row;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: center;
-    max-width: 900px;
+    gap: 1.2rem;
   }
   .dashboard-button {
-    padding: 20px 32px;
-    font-size: 1.15rem;
-    min-width: 200px;
-    flex: 1;
-    max-width: 220px;
-  }
-  .greeting-text {
-    font-size: clamp(40px, 3.5vw, 38px);
-  }
-  .role-text {
-    font-size: clamp(35px, 3vw, 32px);
+    min-width: 180px;
+    padding: 0.9rem 1.8rem;
   }
 }
 
-/* Pantallas <768px - adaptación móvil */
-@media (max-width: 767px) {
-  .dashboard-header {
-    padding: 16px 20px;
-    align-items: center;
-  }
-  .dashboard-logo {
-    height: 40px;
-  }
-  .dashboard-logout-button {
-    height: 36px;
-    padding: 0 16px;
-    font-size: 12px;
-  }
-  .dashboard-main-content {
-    top: 45%;
-    gap: 1.5rem;
-  }
-  .dashboard-welcome-text h1 {
-    font-size: clamp(32px, 8vw, 48px);
-    margin-bottom: 0;
-  }
-  .greeting-and-role {
-    margin-top: 12px;
-  }
-  .greeting-text {
-    font-size: clamp(16px, 4vw, 22px);
-  }
-  .role-text {
-    font-size: clamp(13px, 3.5vw, 18px);
-    margin-top: 3px;
-  }
-  .dashboard-buttons {
-    gap: 14px;
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    max-width: 100%;
-    align-items: center;
-    justify-content: center;
-  }
-  .dashboard-button {
-    padding: 18px 24px;
-    font-size: 1rem;
-    flex: 1;
-    min-width: 160px;
-    max-width: calc(50% - 7px);
-  }
-  .greeting-text {
-    font-size: clamp(32px, 5vw, 30px);
-  }
-  .role-text {
-    font-size: clamp(28px, 4.5vw, 26px);
-  }
-}
-
-/* Pantallas muy pequeñas - una columna */
-@media (max-width: 480px) {
-  .dashboard-header {
-    padding: 14px 16px;
-  }
-  .dashboard-logo {
-    height: 36px;
-  }
-  .dashboard-logout-button {
-    height: 32px;
-    padding: 0 14px;
-    font-size: 11px;
-  }
-  .dashboard-main-content {
-    top: 40%;
-    gap: 1rem;
-  }
-  .dashboard-welcome-text h1 {
-    font-size: clamp(28px, 1vw, 40px);
-  }
-  .greeting-text {
-    font-size: clamp(14px, 4.5vw, 18px);
-  }
-  .role-text {
-    font-size: clamp(12px, 3.8vw, 16px);
-  }
-  .dashboard-buttons {
-    flex-direction: column;
-    gap: 12px;
-    margin-top: 24px;
-    align-items: center;
-    width: 100%;
-    justify-content: center;
-  }
-  .dashboard-button {
-    padding: 16px 24px;
-    font-size: 0.95rem;
-    width: 100%;
-    max-width: 280px;
-  }
-  .greeting-text {
-    font-size: clamp(26px, 6vw, 24px);
-  }
-  .role-text {
-    font-size: clamp(22px, 5vw, 20px);
-  }
-}
-
-/* Calendar specific styles */
-.calendar-section {
-  position: relative;
-  z-index: 10;
-  width: 100%;
-  margin-top: 2rem;
-}
-
-/* Calendar day with appointments indicator */
-.rdp-day_button[data-has-appointments="true"] {
-  position: relative;
-}
-
-.rdp-day_button[data-has-appointments="true"]::after {
-  content: "";
-  position: absolute;
-  bottom: 2px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 4px;
-  height: 4px;
-  background-color: var(--color-blue-500);
-  border-radius: 50%;
-}
-
-/* Calendar responsive adjustments */
 @media (max-width: 1024px) {
-  .calendar-section {
-    margin-top: 1.5rem;
+  .dashboard-container {
+    padding: 1.5rem 2rem;
+  }
+  .dashboard-header {
+    padding: 1.5rem 2rem;
+  }
+  .dashboard-logo {
+    height: 35px;
+  }
+  .dashboard-welcome-text h1 {
+    font-size: 3.5rem;
+  }
+  .greeting-and-role p {
+    font-size: 1.8rem;
+  }
+  .dashboard-buttons {
+    gap: 1rem;
+    justify-content: center;
+  }
+  .dashboard-button {
+    min-width: unset; /* Elimina el min-width para que se adapte mejor */
+    width: calc(50% - 0.5rem); /* Dos botones por fila */
+    max-width: 250px; /* Limita el ancho máximo */
   }
 }
 
 @media (max-width: 768px) {
-  .calendar-section {
-    margin-top: 1rem;
-    padding: 0 1rem;
+  .dashboard-container {
+    padding: 1rem;
   }
-}
-
-/* Ensure contrast and accessibility */
-@media (prefers-reduced-motion: reduce) {
-  .dashboard-content {
-    animation: none;
+  .dashboard-header {
+    flex-direction: column; /* Logo y botón de cerrar sesión en columna */
+    position: static; /* Quita el posicionamiento absoluto */
+    padding: 1rem;
+    margin-bottom: 2rem; /* Espacio entre header y contenido */
   }
-  .dashboard-button,
   .dashboard-logout-button {
-    transition: none;
+    position: static; /* Quita el posicionamiento absoluto */
+    margin-top: 1rem; /* Espacio entre logo y botón */
   }
-}
-
-/* High contrast mode support */
-@media (prefers-contrast: high) {
-  .dashboard-overlay {
-    background: rgba(0, 0, 0, 0.7);
+  .dashboard-logo {
+    height: 30px;
+  }
+  .dashboard-content {
+    margin-top: 0;
+    margin-bottom: 2rem;
+  }
+  .dashboard-welcome-text h1 {
+    font-size: 2.8rem;
+  }
+  .greeting-and-role p {
+    font-size: 1.5rem;
+  }
+  .dashboard-buttons {
+    flex-direction: column; /* Botones en una sola columna */
+    gap: 1rem;
   }
   .dashboard-button {
-    border: 2px solid #1F2937;
+    width: 100%; /* Ocupa todo el ancho disponible */
+    max-width: 300px; /* Limita el ancho máximo en móviles */
+    margin: 0 auto; /* Centra los botones */
   }
 }
 
-/* Estilos específicos para el calendario semanal - Nuevo diseño */
-.calendar-weekly-container {
-  min-height: 100vh;
-  background-color: #f5f7fa;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", sans-serif;
-  padding: 1rem;
-}
-
-.calendar-header {
-  background-color: white;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-  border-bottom: 1px solid #e2e8f0;
-  padding: 1rem 2rem;
-}
-
-.calendar-header-content {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  max-width: 1280px;
-  margin: 0 auto;
-}
-
-.calendar-logo-nav {
-  display: flex;
-  align-items: center;
-  gap: 3rem;
-}
-
-.calendar-logo {
-  font-size: 1.875rem;
-  font-weight: 700;
-  color: #22c55e;
-}
-
-.calendar-nav {
-  display: flex;
-  gap: 2rem;
-}
-
-.calendar-nav-item {
-  background: none;
-  border: none;
-  padding: 0.5rem 0;
-  font-size: 0.875rem;
-  font-weight: 500;
-  color: #9ca3af;
-  cursor: pointer;
-  position: relative;
-  transition: color 0.2s;
-}
-
-.calendar-nav-item:hover {
-  color: #6b7280;
-}
-
-.calendar-nav-item.active {
-  color: #2563eb;
-  font-weight: 600;
-}
-
-.calendar-nav-item.active::after {
-  content: '';
-  position: absolute;
-  bottom: -0.25rem;
-  left: 0;
-  right: 0;
-  height: 2px;
-  background-color: #2563eb;
-}
-
-.calendar-user-controls {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
-
-.calendar-icon-button {
-  padding: 0.5rem;
-  border: none;
-  border-radius: 0.5rem;
-  cursor: pointer;
-  transition: background-color 0.2s;
-}
-
-.calendar-icon-button.notification {
-  background-color: #dbeafe;
-  color: #6b7280;
-}
-
-.calendar-icon-button.settings {
-  background-color: #f3f4f6;
-  color: #6b7280;
-}
-
-.calendar-icon-button:hover {
-  opacity: 0.8;
-}
-
-.calendar-user-avatar {
-  width: 2.5rem;
-  height: 2.5rem;
-  background-color: #e5e7eb;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.calendar-controls {
-  background-color: white;
-  border-bottom: 1px solid #e2e8f0;
-  padding: 1rem 2rem;
-}
-
-.calendar-controls-content {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  max-width: 1280px;
-  margin: 0 auto;
-}
-
-.calendar-controls-left {
-  display: flex;
-  align-items: center;
-  gap: 1.5rem;
-}
-
-.calendar-today-button {
-  background: none;
-  border: none;
-  color: #2563eb;
-  font-weight: 500;
-  font-size: 0.875rem;
-  cursor: pointer;
-}
-
-.calendar-today-button:hover {
-  color: #1d4ed8;
-}
-
-.calendar-date-nav {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-}
-
-.calendar-nav-arrow {
-  background: none;
-  border: none;
-  padding: 0.25rem;
-  color: #9ca3af;
-  cursor: pointer;
-  border-radius: 0.25rem;
-}
-
-.calendar-nav-arrow:hover {
-  color: #6b7280;
-}
-
-.calendar-date-range {
-  color: #6b7280;
-  font-weight: 500;
-  font-size: 0.875rem;
-}
-
-.calendar-week-button {
-  background-color: #dbeafe;
-  color: #1d4ed8;
-  padding: 0.5rem 1rem;
-  border: none;
-  border-radius: 0.5rem;
-  font-size: 0.875rem;
-  font-weight: 500;
-  cursor: pointer;
-}
-
-.calendar-main {
-  padding: 1.5rem 2rem;
-}
-
-.calendar-main-content {
-  max-width: 1280px;
-  margin: 0 auto;
-}
-
-.calendar-grid {
-  background-color: white;
-  border-radius: 0.75rem;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-  border: 1px solid #e2e8f0;
-  overflow: hidden;
-}
-
-.calendar-days-header {
-  display: grid;
-  grid-template-columns: 1fr repeat(7, 1fr);
-  border-bottom: 1px solid #e2e8f0;
-  background-color: #f8fafc;
-}
-
-.calendar-time-indicator {
-  padding: 1rem;
-}
-
-.calendar-time-dot {
-  width: 1rem;
-  height: 1rem;
-  border: 2px solid #d1d5db;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.calendar-time-dot-inner {
-  width: 0.5rem;
-  height: 0.5rem;
-  background-color: #d1d5db;
-  border-radius: 50%;
-}
-
-.calendar-day-header {
-  padding: 1rem;
-  text-align: center;
-}
-
-.calendar-day-name {
-  color: #6b7280;
-  font-size: 0.875rem;
-  font-weight: 500;
-}
-
-.calendar-time-rows {
-  display: flex;
-  flex-direction: column;
-}
-
-.calendar-time-row {
-  display: grid;
-  grid-template-columns: 1fr repeat(7, 1fr);
-  min-height: 100px;
-  border-bottom: 1px solid #f1f5f9;
-}
-
-.calendar-time-row:last-child {
-  border-bottom: none;
-}
-
-.calendar-time-label {
-  padding: 1rem;
-  background-color: #f8fafc;
-  border-right: 1px solid #e2e8f0;
-  display: flex;
-  align-items: flex-start;
-}
-
-.calendar-time-text {
-  font-size: 0.875rem;
-  color: #6b7280;
-  font-weight: 500;
-}
-
-.calendar-day-column {
-  padding: 0.5rem;
-  border-right: 1px solid #e2e8f0;
-  position: relative;
-  min-height: 100px;
-}
-
-.calendar-day-column:last-child {
-  border-right: none;
-}
-
-.calendar-appointment-card {
-  padding: 0.75rem;
-  border-radius: 0.5rem;
-  border: 2px solid;
-  cursor: pointer;
-  margin-bottom: 0.5rem;
-  position: relative;
-  transition: box-shadow 0.2s;
-}
-
-.calendar-appointment-card:hover {
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.calendar-appointment-card.available {
-  background-color: #dcfce7;
-  border-color: #86efac;
-}
-
-.calendar-appointment-card.busy {
-  background-color: #fed7d7;
-  border-color: #fca5a5;
-}
-
-.calendar-appointment-card.unavailable {
-  background-color: #fef3c7;
-  border-color: #fcd34d;
-}
-
-.calendar-time-badges {
-  display: flex;
-  align-items: center;
-  gap: 0.25rem;
-  margin-bottom: 0.5rem;
-}
-
-.calendar-time-badge {
-  font-size: 0.75rem;
-  font-weight: 700;
-  padding: 0.125rem 0.5rem;
-  border-radius: 0.25rem;
-  color: white;
-}
-
-.calendar-time-badge.available {
-  background-color: #22c55e;
-}
-
-.calendar-time-badge.busy {
-  background-color: #ef4444;
-}
-
-.calendar-time-badge.unavailable {
-  background-color: #eab308;
-}
-
-.calendar-patient-name {
-  font-weight: 600;
-  color: #374151;
-  font-size: 0.875rem;
-  margin-bottom: 0.75rem;
-}
-
-.calendar-avatar {
-  position: absolute;
-  bottom: 0.5rem;
-  left: 0.75rem;
-  width: 2rem;
-  height: 2rem;
-  border: 2px solid white;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.75rem;
-  font-weight: 700;
-  color: white;
-}
-
-.calendar-avatar.blue { background-color: #3b82f6; }
-.calendar-avatar.green { background-color: #22c55e; }
-.calendar-avatar.yellow { background-color: #eab308; }
-.calendar-avatar.red { background-color: #ef4444; }
-.calendar-avatar.purple { background-color: #8b5cf6; }
-.calendar-avatar.pink { background-color: #ec4899; }
-.calendar-avatar.indigo { background-color: #6366f1; }
-.calendar-avatar.teal { background-color: #14b8a6; }
-
-.calendar-legend {
-  margin-top: 2rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 2rem;
-}
-
-.calendar-legend-item {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.calendar-legend-dot {
-  width: 1rem;
-  height: 1rem;
-  border-radius: 50%;
-}
-
-.calendar-legend-dot.available { background-color: #22c55e; }
-.calendar-legend-dot.unavailable { background-color: #eab308; }
-.calendar-legend-dot.busy { background-color: #ef4444; }
-
-.calendar-legend-text {
-  font-size: 0.875rem;
-  color: #6b7280;
-  font-weight: 500;
-}
-
-/* Estilos adicionales para las nuevas características */
-.calendar-current-time {
-  color: #1d4ed8;
-  font-weight: 600;
-  font-size: 0.875rem;
-}
-
-.calendar-current-time-line {
-  position: absolute;
-  left: 0;
-  right: 0;
-  height: 2px;
-  background-color: #ef4444;
-  z-index: 10;
-  box-shadow: 0 1px 3px rgba(239, 68, 68, 0.3);
-}
-
-.calendar-current-time-line::before {
-  content: '';
-  position: absolute;
-  left: -4px;
-  top: -4px;
-  width: 10px;
-  height: 10px;
-  background-color: #ef4444;
-  border-radius: 50%;
-  border: 2px solid white;
-}
-
-.calendar-layout {
-  display: grid;
-  grid-template-columns: 1fr 300px;
-  gap: 1.5rem;
-}
-
-.calendar-sidebar {
-  background-color: white;
-  border-radius: 0.75rem;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-  border: 1px solid #e2e8f0;
-  padding: 1.5rem;
-  max-height: 600px;
-  overflow-y: auto;
-}
-
-.calendar-sidebar-title {
-  font-size: 1.125rem;
-  font-weight: 600;
-  color: #374151;
-  margin-bottom: 1rem;
-  display: flex;
-  align-items: center;
-  justify-content: between;
-}
-
-.calendar-appointments-list {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-}
-
-.calendar-appointment-item {
-  padding: 0.75rem;
-  border: 1px solid #e5e7eb;
-  border-radius: 0.5rem;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.calendar-appointment-item:hover {
-  border-color: #3b82f6;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.calendar-appointment-time {
-  font-size: 0.75rem;
-  font-weight: 600;
-  color: #6b7280;
-  margin-bottom: 0.25rem;
-}
-
-.calendar-appointment-owner {
-  font-size: 0.875rem;
-  font-weight: 600;
-  color: #374151;
-  margin-bottom: 0.25rem;
-}
-
-.calendar-appointment-pet {
-  font-size: 0.75rem;
-  color: #6b7280;
-  margin-bottom: 0.25rem;
-}
-
-.calendar-appointment-reason {
-  font-size: 0.75rem;
-  color: #9ca3af;
-}
-
-.calendar-simple-slot {
-  width: 100%;
-  height: 20px;
-  border-radius: 4px;
-  margin-bottom: 2px;
-  cursor: pointer;
-  transition: all 0.2s;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.75rem;
-  font-weight: 600;
-  color: white;
-}
-
-.calendar-simple-slot.occupied {
-  background-color: #94a3b8;
-}
-
-.calendar-simple-slot.occupied:hover {
-  background-color: #64748b;
-}
-
-.calendar-simple-slot.empty {
-  background-color: transparent;
-  border: 1px dashed #e2e8f0;
-}
-
-.calendar-appointments-count {
-  background-color: #3b82f6;
-  color: white;
-  border-radius: 9999px;
-  padding: 0.125rem 0.375rem;
-  font-size: 0.75rem;
-  font-weight: 600;
-  margin-left: auto;
-}
-
-.calendar-day-header.today {
-  background-color: #dbeafe;
-  color: #1d4ed8;
-  font-weight: 600;
-}
-
-.calendar-logo:hover {
-  cursor: pointer;
-  opacity: 0.8;
-}
-
-.calendar-home-button {
-  background: none;
-  border: none;
-  color: #6b7280;
-  font-size: 0.875rem;
-  cursor: pointer;
-  padding: 0.5rem 1rem;
-  border-radius: 0.375rem;
-  transition: all 0.2s;
-}
-
-.calendar-home-button:hover {
-  background-color: #f3f4f6;
-  color: #374151;
-}
-
-/* Header principal ARVI VET - Mejorado para legibilidad */
-.arvi-header {
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(20px);
-  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
-  padding: 1rem 1.5rem;
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.04);
-  transition: all 0.3s ease-in-out;
-  min-height: 70px;
-}
-
-.arvi-header-content {
-  display: grid;
-  grid-template-columns: auto 1fr auto;
-  align-items: center;
-  width: 100%;
-  max-width: 1400px;
-  margin: 0 auto;
-  gap: 2rem;
-}
-
-.arvi-logo {
-  font-size: 2rem;
-  font-weight: 800;
-  background: linear-gradient(135deg, #22c55e, #16a34a);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  cursor: pointer;
-  transition: all 0.2s ease-in-out;
-  padding-left: 1.5rem;
-}
-
-.arvi-logo:hover {
-  transform: scale(1.05);
-}
-
-.arvi-nav {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 3rem;
-}
-
-.arvi-nav-item {
-  padding: 0.75rem 0;
-  font-size: 1rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s ease-in-out;
-  border: none;
-  background: none;
-  position: relative;
-  color: #1d1d1f;
-  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
-}
-
-.arvi-nav-item::after {
-  content: '';
-  position: absolute;
-  bottom: -4px;
-  left: 50%;
-  width: 0;
-  height: 2px;
-  background: #22c55e;
-  transition: all 0.2s ease-in-out;
-  transform: translateX(-50%);
-}
-
-.arvi-nav-item.active {
-  color: #22c55e;
-  font-weight: 500;
-}
-
-.arvi-nav-item.active::after {
-  width: 100%;
-}
-
-.arvi-nav-item:not(.active) {
-  color: #86868b;
-}
-
-.arvi-nav-item:not(.active):hover {
-  color: #1d1d1f;
-}
-
-.arvi-nav-item:not(.active):hover::after {
-  width: 100%;
-}
-
-.arvi-user-controls {
-  display: flex;
-  align-items: center;
-  gap: 2rem;
-  justify-self: end;
-  padding-right: 1rem;
-}
-
-.arvi-datetime {
-  font-size: 0.9rem;
-  color: #4b5563;
-  font-weight: 500;
-  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
-  letter-spacing: 0.3px;
-  transition: opacity 0.1s ease-in-out;
-  min-width: 200px;
-  text-align: right;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-/* Separador entre fecha y hora */
-.datetime-separator {
-  width: 1px;
-  height: 16px;
-  background-color: #D1D5DB;
-  margin: 0 0.5rem;
-}
-
-.arvi-icon-button {
-  padding: 0.75rem;
-  border-radius: 8px;
-  background-color: white;
-  border: 1px solid #e2e8f0;
-  cursor: pointer;
-  transition: all 0.2s;
-  position: relative;
-}
-
-.arvi-icon-button:hover {
-  background-color: #f8fafc;
-  border-color: #cbd5e1;
-}
-
-.arvi-icon-button.notification {
-  color: #3b82f6;
-}
-
-.arvi-icon-button.settings {
-  color: #6b7280;
-}
-
-.arvi-user-avatar {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  overflow: hidden;
-  border: 2px solid #e2e8f0;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.arvi-user-avatar:hover {
-  border-color: #22c55e;
-  transform: scale(1.05);
-}
-
-.arvi-user-avatar img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.arvi-user-avatar-fallback {
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(135deg, #22c55e, #16a34a);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  font-weight: 600;
-  font-size: 0.875rem;
-}
-
-/* Estilos Apple para iconos minimalistas */
-.arvi-icon-button-clean {
-  background: none;
-  border: none;
-  padding: 0.75rem;
-  cursor: pointer;
-  color: #4b5563;
-  transition: all 0.2s ease-in-out;
-  border-radius: 12px;
-  position: relative;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
-  min-height: 44px;
-}
-
-.arvi-icon-button-clean:hover {
-  color: #1d1d1f;
-  transform: scale(1.05);
-  opacity: 1;
-}
-
-.arvi-bell-button,
-.arvi-branch-button {
-  opacity: 0.8;
-  transition: all 0.2s ease-in-out;
-}
-
-.arvi-bell-button:hover,
-.arvi-branch-button:hover {
-  opacity: 1;
-  transform: scale(1.05);
-}
-
-.branch-text {
-  font-size: 0.95rem;
-  font-weight: 600;
-  color: #1d1d1f;
-  max-width: 120px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.arvi-user-avatar-clean {
-  background: none;
-  border: none;
-  padding: 0;
-  cursor: pointer;
-  border-radius: 50%;
-  transition: all 0.2s ease-in-out;
-  opacity: 0.9;
-}
-
-.arvi-user-avatar-clean:hover {
-  transform: scale(1.05);
-  opacity: 1;
-}
-
-.apple-avatar {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  border: 1px solid rgba(0, 0, 0, 0.08);
-}
-
-.profile-photo.apple-avatar {
-  object-fit: cover;
-}
-
-.arvi-user-avatar-fallback.apple-avatar {
-  background: linear-gradient(135deg, #6366f1, #8b5cf6);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  font-weight: 700;
-  font-size: 1rem;
-  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
-  text-transform: uppercase;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
-
-/* Badge de notificaciones mejorado */
-.notification-badge {
-  position: absolute;
-  top: -6px;
-  right: -6px;
-  background: #ef4444;
-  color: white;
-  border-radius: 50%;
-  width: 20px;
-  height: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.75rem;
-  font-weight: 700;
-  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
-  border: 2px solid rgba(255, 255, 255, 0.95);
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
-  z-index: 10;
-}
-
-/* Tooltip para notificaciones */
-.notification-tooltip {
-  position: absolute;
-  bottom: calc(100% + 8px);
-  right: 50%;
-  transform: translateX(50%);
-  background: rgba(0, 0, 0, 0.8);
-  color: white;
-  padding: 0.5rem 0.75rem;
-  border-radius: 6px;
-  font-size: 0.75rem;
-  white-space: nowrap;
-  opacity: 0;
-  visibility: hidden;
-  transition: all 0.2s ease-in-out;
-  z-index: 1000;
-  pointer-events: none;
-}
-
-.notification-tooltip::after {
-  content: '';
-  position: absolute;
-  top: 100%;
-  right: 50%;
-  transform: translateX(50%);
-  border: 4px solid transparent;
-  border-top-color: rgba(0, 0, 0, 0.8);
-}
-
-.arvi-bell-button:hover .notification-tooltip {
-  opacity: 1;
-  visibility: visible;
-}
-
-/* Estilos para dropdowns */
-.arvi-notification-container,
-.arvi-branch-container,
-.arvi-profile-container {
-  position: relative;
-}
-
-.arvi-dropdown {
-  position: absolute;
-  top: calc(100% + 8px);
-  right: 0;
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(20px);
-  border-radius: 16px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  z-index: 1000;
-  min-width: 300px;
-  overflow: hidden;
-}
-
-.apple-popover {
-  animation: appleSlideIn 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-}
-
-.notification-dropdown {
-  min-width: 350px;
-}
-
-.branch-dropdown {
-  min-width: 280px;
-}
-
-.profile-dropdown {
-  min-width: 250px;
-}
-
-@keyframes appleSlideIn {
-  from {
-    opacity: 0;
-    transform: translateY(-8px) scale(0.96);
+@media (max-width: 480px) {
+  .dashboard-container {
+    padding: 0.75rem;
   }
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
+  .dashboard-header {
+    padding: 0.75rem;
   }
-}
-
-@keyframes fadeInScale {
-  from {
-    opacity: 0;
-    transform: translateY(-10px) scale(0.95);
+  .dashboard-logo {
+    height: 25px;
   }
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
+  .dashboard-welcome-text h1 {
+    font-size: 2rem;
   }
-}
-
-.dropdown-header {
-  padding: 1rem 1.25rem 0.75rem;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
-}
-
-.dropdown-header h4 {
-  margin: 0;
-  font-size: 0.9rem;
-  font-weight: 600;
-  color: #1d1d1f;
-  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
-}
-
-/* Estilos para estadísticas de notificaciones */
-.notification-stats {
-  display: flex;
-  padding: 1rem 1.25rem;
-  gap: 1rem;
-  border-bottom: 1px solid #f1f5f9;
-}
-
-.stat-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  flex: 1;
-}
-
-.stat-number {
-  font-size: 1.25rem;
-  font-weight: 700;
-  color: #1f2937;
-}
-
-.stat-label {
-  font-size: 0.75rem;
-  color: #6b7280;
-  margin-top: 2px;
-}
-
-/* Lista de notificaciones */
-.notification-list {
-  max-height: 300px;
-  overflow-y: auto;
-}
-
-.notification-item {
-  display: flex;
-  align-items: center;
-  padding: 0.75rem 1.25rem;
-  border-bottom: 1px solid #f9fafb;
-  transition: background-color 0.2s;
-}
-
-.notification-item:hover {
-  background-color: #f8fafc;
-}
-
-.notification-item:last-child {
-  border-bottom: none;
-}
-
-.notification-content {
-  flex: 1;
-}
-
-.notification-title {
-  font-size: 0.875rem;
-  font-weight: 600;
-  color: #1f2937;
-  margin-bottom: 2px;
-}
-
-.notification-subtitle {
-  font-size: 0.75rem;
-  color: #6b7280;
-  margin-bottom: 2px;
-}
-
-.notification-time {
-  font-size: 0.75rem;
-  color: #9ca3af;
-}
-
-.notification-status {
-  padding: 0.25rem 0.5rem;
-  border-radius: 6px;
-  font-size: 0.75rem;
-  font-weight: 600;
-}
-
-.notification-status.programada {
-  background-color: #dcfce7;
-  color: #166534;
-}
-
-.notification-status.cancelada {
-  background-color: #fef3c7;
-  color: #92400e;
-}
-
-.notification-status.no_asistio {
-  background-color: #fed7d7;
-  color: #991b1b;
-}
-
-/* Lista de sucursales */
-.branch-list {
-  padding: 0.5rem;
-}
-
-.branch-item {
-  width: 100%;
-  text-align: left;
-  padding: 0.75rem;
-  border: none;
-  background: none;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background-color 0.2s;
-  margin-bottom: 0.25rem;
-}
-
-.branch-item:hover {
-  background-color: #f8fafc;
-}
-
-.branch-item.active {
-  background-color: #dbeafe;
-}
-
-.branch-name {
-  font-size: 0.875rem;
-  font-weight: 600;
-  color: #1f2937;
-  margin-bottom: 2px;
-}
-
-.branch-address {
-  font-size: 0.75rem;
-  color: #6b7280;
-}
-
-/* Información de perfil estilo Apple */
-.profile-info {
-  padding: 1rem 1.25rem;
-}
-
-.profile-item {
-  display: flex;
-  justify-content: space-between;
-  padding: 0.75rem 0;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.04);
-}
-
-.profile-item:last-child {
-  border-bottom: none;
-}
-
-.profile-label {
-  font-size: 0.8rem;
-  color: #86868b;
-  font-weight: 400;
-  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
-}
-
-.profile-value {
-  font-size: 0.8rem;
-  color: #1d1d1f;
-  font-weight: 500;
-  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
-}
-
-/* Acciones de perfil */
-.profile-actions {
-  padding: 1rem 1.25rem;
-  border-top: 1px solid #f1f5f9;
-}
-
-.change-photo-btn.apple-button {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.75rem 1rem;
-  background: #007aff;
-  border: none;
-  border-radius: 12px;
-  cursor: pointer;
-  font-size: 0.8rem;
-  font-weight: 500;
-  color: white;
-  transition: all 0.2s ease-in-out;
-  width: 100%;
-  justify-content: center;
-  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
-}
-
-.change-photo-btn.apple-button:hover {
-  background: #0056cc;
-  transform: scale(1.02);
-}
-
-.remove-photo-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0.75rem 1rem;
-  background: #f87171;
-  border: none;
-  border-radius: 12px;
-  cursor: pointer;
-  font-size: 0.8rem;
-  font-weight: 500;
-  color: white;
-  transition: all 0.2s ease-in-out;
-  width: 100%;
-  margin-top: 0.5rem;
-  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
-}
-
-.remove-photo-btn:hover {
-  background: #dc2626;
-  transform: scale(1.02);
-}
-
-/* Footer de dropdown */
-.dropdown-footer {
-  padding: 0.75rem 1.25rem;
-  border-top: 1px solid #f1f5f9;
-  text-align: center;
-  font-size: 0.875rem;
-  color: #3b82f6;
-  cursor: pointer;
-  font-weight: 500;
-}
-
-.dropdown-footer:hover {
-  background-color: #f8fafc;
-}
-
-/* Nuevo diseño de calendario - Estilo imagen */
-.new-calendar-container {
-  background-color: #f5f7fa;
-  min-height: calc(100vh - 80px);
-  padding: 1rem;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", sans-serif;
-}
-
-.new-calendar-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 2rem;
-  background: white;
-  padding: 1rem 2rem;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
-
-.new-calendar-nav {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
-
-.new-calendar-today-btn {
-  background: white;
-  border: 1px solid #e2e8f0;
-  border-radius: 8px;
-  padding: 0.5rem 1rem;
-  font-size: 0.875rem;
-  color: #64748b;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.new-calendar-today-btn:hover {
-  background-color: #f8fafc;
-}
-
-.new-calendar-nav-arrows {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.new-calendar-nav-arrow {
-  background: none;
-  border: none;
-  padding: 0.5rem;
-  cursor: pointer;
-  color: #64748b;
-  border-radius: 6px;
-  transition: all 0.2s;
-}
-
-.new-calendar-nav-arrow:hover {
-  background-color: #f1f5f9;
-}
-
-.new-calendar-date-title {
-  font-size: 1.125rem;
-  font-weight: 600;
-  color: #334155;
-  margin: 0 1rem;
-}
-
-.new-calendar-controls {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.new-calendar-grid {
-  background: white;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  overflow: hidden;
-  position: relative;
-}
-
-.new-calendar-days-header {
-  display: grid;
-  grid-template-columns: 80px repeat(6, 1fr);
-  border-bottom: 1px solid #e2e8f0;
-  background-color: #f8fafc;
-}
-
-.new-calendar-time-column {
-  padding: 1rem 0.5rem;
-  text-align: center;
-  border-right: 1px solid #e2e8f0;
-  background-color: #f8fafc;
-}
-
-.new-calendar-day-column {
-  padding: 1rem;
-  text-align: center;
-  border-right: 1px solid #e2e8f0;
-  position: relative;
-}
-
-.new-calendar-day-column:last-child {
-  border-right: none;
-}
-
-.new-calendar-day-avatar {
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  margin: 0 auto 0.5rem;
-  background-color: #e2e8f0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-}
-
-.new-calendar-day-avatar img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.new-calendar-day-name {
-  font-size: 0.875rem;
-  font-weight: 600;
-  color: #334155;
-}
-
-.new-calendar-time-grid {
-  display: grid;
-  grid-template-columns: 80px repeat(6, 1fr);
-  position: relative;
-}
-
-.new-calendar-time-row {
-  display: contents;
-}
-
-.new-calendar-time-label {
-  padding: 0.75rem 0.5rem;
-  text-align: center;
-  border-right: 1px solid #e2e8f0;
-  border-bottom: 1px solid #e2e8f0;
-  background-color: #f8fafc;
-  font-size: 0.875rem;
-  color: #64748b;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 60px;
-}
-
-.new-calendar-cell {
-  border-right: 1px solid #e2e8f0;
-  border-bottom: 1px solid #e2e8f0;
-  min-height: 60px;
-  position: relative;
-  padding: 0.25rem;
-}
-
-.new-calendar-cell:last-child {
-  border-right: none;
-}
-
-.new-calendar-appointment {
-  background-color: #10b981;
-  border-radius: 6px;
-  padding: 0.5rem;
-  margin-bottom: 0.25rem;
-  cursor: pointer;
-  transition: all 0.2s;
-  border-left: 4px solid #059669;
-  position: relative;
-}
-
-.new-calendar-appointment:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-}
-
-.new-calendar-appointment.en-curso {
-  background-color: #f59e0b;
-  border-left-color: #d97706;
-}
-
-.new-calendar-appointment.cancelada {
-  background-color: #eab308;
-  border-left-color: #ca8a04;
-}
-
-.new-calendar-appointment.completada {
-  background-color: #10b981;
-  border-left-color: #059669;
-}
-
-.new-calendar-appointment.programada {
-  background-color: #10b981;
-  border-left-color: #059669;
-}
-
-.new-calendar-appointment-content {
-  color: white;
-}
-
-.new-calendar-appointment-name {
-  font-size: 0.875rem;
-  font-weight: 600;
-  margin-bottom: 0.25rem;
-  line-height: 1.2;
-}
-
-.new-calendar-appointment-type {
-  font-size: 0.75rem;
-  opacity: 0.9;
-  margin-bottom: 0.25rem;
-}
-
-.new-calendar-appointment-time {
-  font-size: 0.75rem;
-  opacity: 0.8;
-}
-
-.new-calendar-appointment-icon {
-  position: absolute;
-  top: 0.5rem;
-  right: 0.5rem;
-  width: 1rem;
-  height: 1rem;
-  opacity: 0.7;
-}
-
-.new-calendar-current-time-line {
-  position: absolute;
-  left: 80px;
-  right: 0;
-  height: 2px;
-  background-color: #ef4444;
-  z-index: 20;
-  pointer-events: none;
-}
-
-.new-calendar-current-time-line::before {
-  content: '';
-  position: absolute;
-  left: -5px;
-  top: -4px;
-  width: 10px;
-  height: 10px;
-  background-color: #ef4444;
-  border-radius: 50%;
-  border: 2px solid white;
-}
-
-.new-calendar-modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
-}
-
-.new-calendar-modal-content {
-  background: white;
-  border-radius: 12px;
-  padding: 2rem;
-  width: 90%;
-  max-width: 500px;
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
-}
-
-.new-calendar-modal-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 1.5rem;
-  padding-bottom: 1rem;
-  border-bottom: 1px solid #e2e8f0;
-}
-
-.new-calendar-modal-title {
-  font-size: 1.25rem;
-  font-weight: 600;
-  color: #1f2937;
-}
-
-.new-calendar-modal-close {
-  background: none;
-  border: none;
-  padding: 0.5rem;
-  cursor: pointer;
-  color: #6b7280;
-  border-radius: 6px;
-  transition: all 0.2s;
-}
-
-.new-calendar-modal-close:hover {
-  background-color: #f3f4f6;
-  color: #374151;
-}
-
-.new-calendar-modal-body {
-  color: #374151;
-}
-
-.new-calendar-modal-field {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  margin-bottom: 1rem;
-  padding: 0.75rem;
-  background-color: #f9fafb;
-  border-radius: 8px;
-}
-
-.new-calendar-modal-field-icon {
-  width: 1.25rem;
-  height: 1.25rem;
-  color: #6b7280;
-}
-
-.new-calendar-modal-field-content {
-  flex: 1;
-}
-
-.new-calendar-modal-field-label {
-  font-size: 0.75rem;
-  color: #6b7280;
-  margin-bottom: 0.25rem;
-}
-
-.new-calendar-modal-field-value {
-  font-size: 0.875rem;
-  font-weight: 500;
-  color: #1f2937;
-}
-
-.new-calendar-status-indicator {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.375rem 0.75rem;
-  border-radius: 9999px;
-  font-size: 0.75rem;
-  font-weight: 600;
-}
-
-.new-calendar-status-indicator.programada {
-  background-color: #dcfce7;
-  color: #166534;
-}
-
-.new-calendar-status-indicator.en-curso {
-  background-color: #fed7aa;
-  color: #9a3412;
-}
-
-.new-calendar-status-indicator.cancelada {
-  background-color: #fef3c7;
-  color: #92400e;
-}
-
-.new-calendar-status-indicator.completada {
-  background-color: #dcfce7;
-  color: #166534;
-}
-
-.new-calendar-status-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-}
-
-.new-calendar-status-dot.programada {
-  background-color: #22c55e;
-}
-
-.new-calendar-status-dot.en-curso {
-  background-color: #f59e0b;
-}
-
-.new-calendar-status-dot.cancelada {
-  background-color: #eab308;
-}
-
-.new-calendar-status-dot.completada {
-  background-color: #22c55e;
-}
-
-@media (max-width: 1024px) {
-  .arvi-header {
-    padding: 0.75rem 1rem;
+  .greeting-and-role p {
+    font-size: 1.2rem;
   }
-  
-  .arvi-header-content {
-    flex-direction: column;
-    gap: 1rem;
-    align-items: flex-start;
+  .dashboard-button {
+    padding: 0.8rem 1.2rem;
+    font-size: 0.9rem;
   }
-  
-  .arvi-nav {
-    gap: 1rem;
-    flex-wrap: wrap;
-  }
-  
-  .arvi-nav-item {
-    padding: 0.5rem 1rem;
-    font-size: 0.75rem;
-  }
-  
-  .arvi-user-controls {
-    align-self: flex-end;
-    gap: 0.5rem;
-  }
-  
-  .arvi-datetime {
-    display: none;
-  }
-  
-  .new-calendar-days-header,
-  .new-calendar-time-grid {
-    grid-template-columns: 60px repeat(6, 1fr);
-  }
-  
-  .new-calendar-time-column {
-    padding: 0.5rem 0.25rem;
-  }
-  
-  .new-calendar-day-column {
-    padding: 0.5rem;
-  }
-  
-  .new-calendar-day-avatar {
-    width: 32px;
-    height: 32px;
-  }
-  
-  .new-calendar-appointment {
-    padding: 0.25rem;
-  }
-  
-  .new-calendar-appointment-name {
-    font-size: 0.75rem;
-  }
-  
-  .new-calendar-appointment-type,
-  .new-calendar-appointment-time {
-    font-size: 0.625rem;
+  .dashboard-logout-button {
+    padding: 0.6rem 1.2rem;
+    font-size: 0.8rem;
   }
 }
