@@ -35,3 +35,15 @@ Thumbs.db
 *.njsproj
 *.sln
 *.sw?
+
+# Public images and assets
+public/images/
+
+# Webpack hot update files
+.next/static/webpack/
+
+# Service-related TypeScript files
+services/
+
+# Additional Next.js build cache
+.next/cache/
