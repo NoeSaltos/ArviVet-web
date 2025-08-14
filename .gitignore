@@ -25,6 +25,7 @@ pnpm-lock.yaml
 # Editor files
 .vscode/
 .idea/
+!.vscode/extensions.json
 
 # OS files
 .DS_Store
