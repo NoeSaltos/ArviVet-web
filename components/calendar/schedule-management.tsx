@@ -25,24 +25,31 @@ const WEEKDAYS = [
   { value: 3, label: 'Miércoles' },
   { value: 4, label: 'Jueves' },
   { value: 5, label: 'Viernes' },
-  { value: 6, label: 'Sábado' }
+  { value: 6, label: 'Sábado' },
 ];
 
-export function ScheduleManagement({ vetId, onScheduleChange }: ScheduleManagementProps) {
+export function ScheduleManagement({
+  vetId,
+  onScheduleChange,
+}: ScheduleManagementProps) {
   const { permissions } = usePermissions();
   const [schedules, setSchedules] = useState<VetSchedule[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [isEditing, setIsEditing] = useState(false);
-  const [editingSchedule, setEditingSchedule] = useState<VetSchedule | null>(null);
+  const [editingSchedule, setEditingSchedule] = useState<VetSchedule | null>(
+    null
+  );
   const [isCreating, setIsCreating] = useState(false);
-  const [specialities, setSpecialities] = useState<Array<{id: number; name: string}>>([]);
+  const [specialities, setSpecialities] = useState<
+    Array<{ id: number; name: string }>
+  >([]);
 
   const [scheduleForm, setScheduleForm] = useState<ScheduleForm>({
     weekday: 1,
     start_time: '08:00',
     end_time: '17:00',
-    speciality_id: 0
+    speciality_id: 0,
   });
 
   useEffect(() => {
@@ -56,7 +63,7 @@ export function ScheduleManagement({ vetId, onScheduleChange }: ScheduleManageme
       setError(null);
 
       const response = await vetScheduleService.getVetSchedules(vetId);
-      
+
       if (response.success && response.data) {
         setSchedules(response.data);
       } else {
@@ -78,7 +85,7 @@ export function ScheduleManagement({ vetId, onScheduleChange }: ScheduleManageme
         { id: 1, name: 'Consulta General' },
         { id: 2, name: 'Cirugía' },
         { id: 3, name: 'Vacunación' },
-        { id: 4, name: 'Emergencias' }
+        { id: 4, name: 'Emergencias' },
       ];
       setSpecialities(mockSpecialities);
     } catch (err) {
@@ -95,7 +102,7 @@ export function ScheduleManagement({ vetId, onScheduleChange }: ScheduleManageme
 
       const newScheduleData = {
         vet_id: vetId,
-        ...scheduleForm
+        ...scheduleForm,
       };
 
       const response = await vetScheduleService.createSchedule(newScheduleData);
@@ -107,7 +114,7 @@ export function ScheduleManagement({ vetId, onScheduleChange }: ScheduleManageme
           weekday: 1,
           start_time: '08:00',
           end_time: '17:00',
-          speciality_id: 0
+          speciality_id: 0,
         });
         onScheduleChange?.();
       } else {
@@ -130,14 +137,17 @@ export function ScheduleManagement({ vetId, onScheduleChange }: ScheduleManageme
         weekday: schedule.weekday,
         start_time: schedule.start_time,
         end_time: schedule.end_time,
-        speciality_id: schedule.speciality_id
+        speciality_id: schedule.speciality_id,
       };
 
-      const response = await vetScheduleService.updateSchedule(schedule.id, updateData);
+      const response = await vetScheduleService.updateSchedule(
+        schedule.id,
+        updateData
+      );
 
       if (response.success && response.data) {
-        setSchedules(prev => 
-          prev.map(s => s.id === schedule.id ? response.data! : s)
+        setSchedules(prev =>
+          prev.map(s => (s.id === schedule.id ? response.data! : s))
         );
         setEditingSchedule(null);
         setIsEditing(false);
@@ -231,10 +241,12 @@ export function ScheduleManagement({ vetId, onScheduleChange }: ScheduleManageme
               <label>Día de la semana</label>
               <select
                 value={scheduleForm.weekday}
-                onChange={(e) => setScheduleForm(prev => ({ 
-                  ...prev, 
-                  weekday: parseInt(e.target.value) 
-                }))}
+                onChange={e =>
+                  setScheduleForm(prev => ({
+                    ...prev,
+                    weekday: parseInt(e.target.value),
+                  }))
+                }
                 className="form-select"
               >
                 {WEEKDAYS.map(day => (
@@ -249,10 +261,12 @@ export function ScheduleManagement({ vetId, onScheduleChange }: ScheduleManageme
               <label>Especialidad</label>
               <select
                 value={scheduleForm.speciality_id}
-                onChange={(e) => setScheduleForm(prev => ({ 
-                  ...prev, 
-                  speciality_id: parseInt(e.target.value) 
-                }))}
+                onChange={e =>
+                  setScheduleForm(prev => ({
+                    ...prev,
+                    speciality_id: parseInt(e.target.value),
+                  }))
+                }
                 className="form-select"
               >
                 <option value={0}>General</option>
@@ -269,10 +283,12 @@ export function ScheduleManagement({ vetId, onScheduleChange }: ScheduleManageme
               <input
                 type="time"
                 value={scheduleForm.start_time}
-                onChange={(e) => setScheduleForm(prev => ({ 
-                  ...prev, 
-                  start_time: e.target.value 
-                }))}
+                onChange={e =>
+                  setScheduleForm(prev => ({
+                    ...prev,
+                    start_time: e.target.value,
+                  }))
+                }
                 className="form-input"
               />
             </div>
@@ -282,27 +298,23 @@ export function ScheduleManagement({ vetId, onScheduleChange }: ScheduleManageme
               <input
                 type="time"
                 value={scheduleForm.end_time}
-                onChange={(e) => setScheduleForm(prev => ({ 
-                  ...prev, 
-                  end_time: e.target.value 
-                }))}
+                onChange={e =>
+                  setScheduleForm(prev => ({
+                    ...prev,
+                    end_time: e.target.value,
+                  }))
+                }
                 className="form-input"
               />
             </div>
           </div>
 
           <div className="form-actions">
-            <button
-              onClick={handleCreateSchedule}
-              className="btn-save"
-            >
+            <button onClick={handleCreateSchedule} className="btn-save">
               <Save className="btn-icon" />
               Guardar
             </button>
-            <button
-              onClick={() => setIsCreating(false)}
-              className="btn-cancel"
-            >
+            <button onClick={() => setIsCreating(false)} className="btn-cancel">
               <X className="btn-icon" />
               Cancelar
             </button>
@@ -326,10 +338,16 @@ export function ScheduleManagement({ vetId, onScheduleChange }: ScheduleManageme
                   <div className="edit-grid">
                     <select
                       value={editingSchedule.weekday}
-                      onChange={(e) => setEditingSchedule(prev => prev ? ({
-                        ...prev,
-                        weekday: parseInt(e.target.value)
-                      }) : null)}
+                      onChange={e =>
+                        setEditingSchedule(prev =>
+                          prev
+                            ? {
+                                ...prev,
+                                weekday: parseInt(e.target.value),
+                              }
+                            : null
+                        )
+                      }
                       className="form-select small"
                     >
                       {WEEKDAYS.map(day => (
@@ -342,20 +360,32 @@ export function ScheduleManagement({ vetId, onScheduleChange }: ScheduleManageme
                     <input
                       type="time"
                       value={editingSchedule.start_time}
-                      onChange={(e) => setEditingSchedule(prev => prev ? ({
-                        ...prev,
-                        start_time: e.target.value
-                      }) : null)}
+                      onChange={e =>
+                        setEditingSchedule(prev =>
+                          prev
+                            ? {
+                                ...prev,
+                                start_time: e.target.value,
+                              }
+                            : null
+                        )
+                      }
                       className="form-input small"
                     />
 
                     <input
                       type="time"
                       value={editingSchedule.end_time}
-                      onChange={(e) => setEditingSchedule(prev => prev ? ({
-                        ...prev,
-                        end_time: e.target.value
-                      }) : null)}
+                      onChange={e =>
+                        setEditingSchedule(prev =>
+                          prev
+                            ? {
+                                ...prev,
+                                end_time: e.target.value,
+                              }
+                            : null
+                        )
+                      }
                       className="form-input small"
                     />
                   </div>

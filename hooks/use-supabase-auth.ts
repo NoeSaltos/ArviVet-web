@@ -34,14 +34,14 @@ export function useSupabaseAuth() {
   // Efecto para inicializar la autenticación y escuchar cambios
   useEffect(() => {
     initializeAuth();
-    
+
     // Escuchar cambios en el estado de autenticación
     const { data: authListener } = supabaseAuthService.onAuthStateChange(
-      async (session) => {
+      async session => {
         console.log('Auth state changed:', session?.user?.email);
         setSession(session);
         setUser(session?.user || null);
-        
+
         if (session?.user) {
           // Obtener datos adicionales del usuario
           await loadUserData(session.user.email!);
@@ -49,7 +49,7 @@ export function useSupabaseAuth() {
           setUserData(null);
           clearStorageData();
         }
-        
+
         setIsInitializing(false);
       }
     );
@@ -65,7 +65,7 @@ export function useSupabaseAuth() {
       const currentSession = await supabaseAuthService.getCurrentSession();
       setSession(currentSession);
       setUser(currentSession?.user || null);
-      
+
       if (currentSession?.user) {
         await loadUserData(currentSession.user.email!);
       }
@@ -82,17 +82,20 @@ export function useSupabaseAuth() {
       // Aquí podrías hacer una consulta directa a la tabla users
       // Por ahora usamos el método del servicio
       const userType = await supabaseAuthService.getUserType();
-      
+
       // Actualizar localStorage para compatibilidad
       if (typeof window !== 'undefined' && session) {
         localStorage.setItem('auth-token', session.access_token);
         localStorage.setItem('user-type', userType || '');
-        localStorage.setItem('user-data', JSON.stringify({
-          id: user?.id,
-          email: user?.email,
-          name: email,
-          userType: userType || '',
-        }));
+        localStorage.setItem(
+          'user-data',
+          JSON.stringify({
+            id: user?.id,
+            email: user?.email,
+            name: email,
+            userType: userType || '',
+          })
+        );
       }
     } catch (error) {
       console.error('Error loading user data:', error);
@@ -119,13 +122,13 @@ export function useSupabaseAuth() {
 
       if (result.success && result.data) {
         console.log('Login successful:', result.data.user.email);
-        
+
         // La redirección se manejará automáticamente por el listener
         // pero podemos forzarla aquí también
         setTimeout(() => {
           router.push('/dashboard');
         }, 100);
-        
+
         return result;
       } else {
         const errorMessage = result.error || 'Error al iniciar sesión';
@@ -133,7 +136,8 @@ export function useSupabaseAuth() {
         throw new Error(errorMessage);
       }
     } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : 'Error de conexión';
+      const errorMessage =
+        error instanceof Error ? error.message : 'Error de conexión';
       setError(errorMessage);
       console.error('Login failed:', error);
       throw error;
@@ -207,7 +211,7 @@ export function useSupabaseAuth() {
     user,
     userData,
     error,
-    
+
     // Funciones
     login,
     logout,
@@ -221,13 +225,7 @@ export function useSupabaseAuth() {
 
 // Hook de compatibilidad que mantiene la misma interfaz que el anterior
 export function useAuth() {
-  const {
-    isLoading,
-    login,
-    logout,
-    error,
-    clearError,
-  } = useSupabaseAuth();
+  const { isLoading, login, logout, error, clearError } = useSupabaseAuth();
 
   return {
     isLoading,

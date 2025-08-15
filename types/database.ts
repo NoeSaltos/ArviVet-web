@@ -256,7 +256,7 @@ export interface CalendarFilters {
 // TIPOS DE ESTADO Y ENUMS
 // ========================================
 
-export type AppointmentStatus = 
+export type AppointmentStatus =
   | 'programada'
   | 'confirmada'
   | 'en_curso'
@@ -269,7 +269,7 @@ export type WeekDay = 0 | 1 | 2 | 3 | 4 | 5 | 6; // 0 = Domingo, 1 = Lunes, etc.
 
 export type UserRoleType = 'admin' | 'veterinario' | 'asistente' | 'cliente';
 
-export type BlockReason = 
+export type BlockReason =
   | 'vacaciones'
   | 'enfermedad'
   | 'capacitacion'

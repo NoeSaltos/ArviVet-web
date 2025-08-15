@@ -12,13 +12,13 @@ export const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey, {
   auth: {
     autoRefreshToken: true,
     persistSession: true,
-    detectSessionInUrl: true
+    detectSessionInUrl: true,
   },
   realtime: {
     params: {
-      eventsPerSecond: 10
-    }
-  }
+      eventsPerSecond: 10,
+    },
+  },
 });
 
 // Tipos de conveniencia para las operaciones de la base de datos
@@ -42,6 +42,6 @@ export const createSupabaseResponse = <T>(
   return {
     data,
     error: error ? handleSupabaseError(error) : null,
-    success: !error
+    success: !error,
   };
 };

@@ -2,7 +2,15 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { ArrowLeft, Phone, Mail, Calendar, Users, Clock, Plus } from 'lucide-react';
+import {
+  ArrowLeft,
+  Phone,
+  Mail,
+  Calendar,
+  Users,
+  Clock,
+  Plus,
+} from 'lucide-react';
 import { usePermissions } from '@/hooks/use-permissions';
 import { supabase } from '@/lib/supabase';
 import { authService } from '@/services/auth-service';
@@ -54,7 +62,8 @@ export default function StaffPage() {
       // Obtener veterinarios con sus especialidades
       const { data: vetsData, error: vetsError } = await supabase
         .from('vet')
-        .select(`
+        .select(
+          `
           id,
           name,
           email,
@@ -65,7 +74,8 @@ export default function StaffPage() {
               name
             )
           )
-        `)
+        `
+        )
         .order('name');
 
       if (vetsError) {
@@ -79,11 +89,12 @@ export default function StaffPage() {
 
       // Procesar datos de veterinarios
       const processedVets = await Promise.all(
-        vetsData.map(async (vet) => {
+        vetsData.map(async vet => {
           // Obtener especialidades
-          const specialities = vet.vets_by_specialities?.map(
-            (vs: any) => vs.speciality?.name
-          ).filter(Boolean) || [];
+          const specialities =
+            vet.vets_by_specialities
+              ?.map((vs: any) => vs.speciality?.name)
+              .filter(Boolean) || [];
 
           // Obtener estadísticas de citas
           const { data: appointmentsData } = await supabase
@@ -108,13 +119,15 @@ export default function StaffPage() {
 
           let nextAppointment: string | undefined;
           if (nextAppointmentData) {
-            const date = new Date(`${nextAppointmentData.date}T${nextAppointmentData.hour}`);
+            const date = new Date(
+              `${nextAppointmentData.date}T${nextAppointmentData.hour}`
+            );
             nextAppointment = date.toLocaleDateString('es-ES', {
               weekday: 'short',
               day: 'numeric',
               month: 'short',
               hour: '2-digit',
-              minute: '2-digit'
+              minute: '2-digit',
             });
           }
 
@@ -125,10 +138,11 @@ export default function StaffPage() {
             .eq('vet_id', vet.id)
             .order('weekday');
 
-          const workingHours = schedulesData?.map(schedule => ({
-            day: getDayName(schedule.weekday),
-            hours: `${schedule.start_time} - ${schedule.end_time}`
-          })) || [];
+          const workingHours =
+            schedulesData?.map(schedule => ({
+              day: getDayName(schedule.weekday),
+              hours: `${schedule.start_time} - ${schedule.end_time}`,
+            })) || [];
 
           return {
             id: vet.id,
@@ -139,7 +153,7 @@ export default function StaffPage() {
             totalAppointments,
             nextAppointment,
             workingHours,
-            isActive: true
+            isActive: true,
           };
         })
       );
@@ -281,11 +295,15 @@ export default function StaffPage() {
                       </span>
                     ))
                   ) : (
-                    <span className="no-speciality">Sin especialidad asignada</span>
+                    <span className="no-speciality">
+                      Sin especialidad asignada
+                    </span>
                   )}
                 </div>
               </div>
-              <div className={`vet-status ${vet.isActive ? 'active' : 'inactive'}`}>
+              <div
+                className={`vet-status ${vet.isActive ? 'active' : 'inactive'}`}
+              >
                 {vet.isActive ? 'Activo' : 'Inactivo'}
               </div>
             </div>
@@ -355,7 +373,9 @@ export default function StaffPage() {
         <div className="no-vets-message">
           <Users className="no-vets-icon" />
           <h3>No hay veterinarios registrados</h3>
-          <p>Agrega veterinarios para comenzar a gestionar el personal médico.</p>
+          <p>
+            Agrega veterinarios para comenzar a gestionar el personal médico.
+          </p>
           <button onClick={handleAddVeterinarian} className="add-vet-cta">
             Agregar Primer Veterinario
           </button>

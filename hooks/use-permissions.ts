@@ -55,7 +55,9 @@ export function usePermissions() {
       }
 
       // Obtener sesión de Supabase para ID real
-      const { data: { session } } = await supabase.auth.getSession();
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
       const currentUserId = session?.user?.id;
 
       // Obtener información del veterinario si es veterinario
@@ -66,7 +68,7 @@ export function usePermissions() {
           .select('id')
           .eq('email', userData.email)
           .single();
-        
+
         currentVetId = vetData?.id;
       }
 
@@ -96,7 +98,12 @@ export function usePermissions() {
     }
   };
 
-  const hasPermission = (permission: keyof Omit<UserPermissions, 'currentUserId' | 'currentVetId' | 'userRole'>): boolean => {
+  const hasPermission = (
+    permission: keyof Omit<
+      UserPermissions,
+      'currentUserId' | 'currentVetId' | 'userRole'
+    >
+  ): boolean => {
     return permissions[permission];
   };
 

@@ -1,6 +1,10 @@
 import { describe, it, expect, jest, beforeEach } from '@jest/globals';
 import { renderHook, act } from '@testing-library/react';
-import { useCalendar, useVetSchedule, useAppointmentBlocks } from '@/hooks/use-calendar';
+import {
+  useCalendar,
+  useVetSchedule,
+  useAppointmentBlocks,
+} from '@/hooks/use-calendar';
 import { availabilityService } from '@/services/availability-service';
 import { vetScheduleService } from '@/services/vet-schedule-service';
 import { appointmentBlockService } from '@/services/appointment-block-service';
@@ -10,9 +14,15 @@ jest.mock('@/services/availability-service');
 jest.mock('@/services/vet-schedule-service');
 jest.mock('@/services/appointment-block-service');
 
-const mockAvailabilityService = availabilityService as jest.Mocked<typeof availabilityService>;
-const mockVetScheduleService = vetScheduleService as jest.Mocked<typeof vetScheduleService>;
-const mockAppointmentBlockService = appointmentBlockService as jest.Mocked<typeof appointmentBlockService>;
+const mockAvailabilityService = availabilityService as jest.Mocked<
+  typeof availabilityService
+>;
+const mockVetScheduleService = vetScheduleService as jest.Mocked<
+  typeof vetScheduleService
+>;
+const mockAppointmentBlockService = appointmentBlockService as jest.Mocked<
+  typeof appointmentBlockService
+>;
 
 describe('useCalendar Hook', () => {
   beforeEach(() => {
@@ -29,7 +39,9 @@ describe('useCalendar Hook', () => {
       expect(result.current.weekAvailability).toEqual([]);
       expect(result.current.selectedVet).toBeNull();
       expect(result.current.selectedSpeciality).toBeNull();
-      expect(result.current.selectedDate).toBe(new Date().toISOString().split('T')[0]);
+      expect(result.current.selectedDate).toBe(
+        new Date().toISOString().split('T')[0]
+      );
     });
 
     it('should fetch vet availability successfully', async () => {
@@ -45,45 +57,58 @@ describe('useCalendar Hook', () => {
             vet_id: 1,
             speciality_id: 1,
             branch_id: 1,
-            duration_minutes: 60
-          }
+            duration_minutes: 60,
+          },
         ],
         blocked_slots: [],
-        existing_appointments: []
+        existing_appointments: [],
       };
 
       mockAvailabilityService.getVetAvailability.mockResolvedValue({
         data: mockAvailability,
         error: null,
-        success: true
+        success: true,
       });
 
       const { result } = renderHook(() => useCalendar());
 
       await act(async () => {
-        const data = await result.current.getVetAvailability(1, 1, '2024-03-15');
+        const data = await result.current.getVetAvailability(
+          1,
+          1,
+          '2024-03-15'
+        );
         expect(data).toEqual(mockAvailability);
       });
 
       expect(result.current.loading).toBe(false);
       expect(result.current.error).toBeNull();
       expect(result.current.currentAvailability).toEqual(mockAvailability);
-      expect(mockAvailabilityService.getVetAvailability).toHaveBeenCalledWith(1, 1, '2024-03-15', 30);
+      expect(mockAvailabilityService.getVetAvailability).toHaveBeenCalledWith(
+        1,
+        1,
+        '2024-03-15',
+        30
+      );
     });
 
     it('should handle errors when fetching availability', async () => {
       const errorMessage = 'Failed to fetch availability';
-      
+
       mockAvailabilityService.getVetAvailability.mockResolvedValue({
         data: null,
         error: errorMessage,
-        success: false
+        success: false,
       });
 
       const { result } = renderHook(() => useCalendar());
 
       await act(async () => {
-        const data = await result.current.getVetAvailability(1, 1, '2024-03-15');
+        const data = await result.current.getVetAvailability(
+          1,
+          1,
+          '2024-03-15'
+        );
         expect(data).toBeNull();
       });
 
@@ -96,17 +121,29 @@ describe('useCalendar Hook', () => {
       mockAvailabilityService.isSlotAvailable.mockResolvedValue({
         data: true,
         error: null,
-        success: true
+        success: true,
       });
 
       const { result } = renderHook(() => useCalendar());
 
       await act(async () => {
-        const isAvailable = await result.current.checkSlotAvailability(1, 1, '2024-03-15', '10:00', 60);
+        const isAvailable = await result.current.checkSlotAvailability(
+          1,
+          1,
+          '2024-03-15',
+          '10:00',
+          60
+        );
         expect(isAvailable).toBe(true);
       });
 
-      expect(mockAvailabilityService.isSlotAvailable).toHaveBeenCalledWith(1, 1, '2024-03-15', '10:00', 60);
+      expect(mockAvailabilityService.isSlotAvailable).toHaveBeenCalledWith(
+        1,
+        1,
+        '2024-03-15',
+        '10:00',
+        60
+      );
     });
 
     it('should find next available slot', async () => {
@@ -118,23 +155,30 @@ describe('useCalendar Hook', () => {
         vet_id: 1,
         speciality_id: 1,
         branch_id: 1,
-        duration_minutes: 60
+        duration_minutes: 60,
       };
 
       mockAvailabilityService.findNextAvailableSlot.mockResolvedValue({
         data: mockSlot,
         error: null,
-        success: true
+        success: true,
       });
 
       const { result } = renderHook(() => useCalendar());
 
       await act(async () => {
-        const slot = await result.current.findNextAvailableSlot(1, 1, '2024-03-15', 60);
+        const slot = await result.current.findNextAvailableSlot(
+          1,
+          1,
+          '2024-03-15',
+          60
+        );
         expect(slot).toEqual(mockSlot);
       });
 
-      expect(mockAvailabilityService.findNextAvailableSlot).toHaveBeenCalledWith(1, 1, '2024-03-15', 60, 30);
+      expect(
+        mockAvailabilityService.findNextAvailableSlot
+      ).toHaveBeenCalledWith(1, 1, '2024-03-15', 60, 30);
     });
 
     it('should clear error', () => {
@@ -174,7 +218,7 @@ describe('useCalendar Hook', () => {
         speciality_id: 1,
         weekday: 1,
         start_time: '09:00',
-        end_time: '17:00'
+        end_time: '17:00',
       };
 
       const scheduleData = {
@@ -182,13 +226,13 @@ describe('useCalendar Hook', () => {
         speciality_id: 1,
         weekday: 1,
         start_time: '09:00',
-        end_time: '17:00'
+        end_time: '17:00',
       };
 
       mockVetScheduleService.createSchedule.mockResolvedValue({
         data: mockSchedule,
         error: null,
-        success: true
+        success: true,
       });
 
       const { result } = renderHook(() => useVetSchedule());
@@ -200,7 +244,9 @@ describe('useCalendar Hook', () => {
 
       expect(result.current.loading).toBe(false);
       expect(result.current.error).toBeNull();
-      expect(mockVetScheduleService.createSchedule).toHaveBeenCalledWith(scheduleData);
+      expect(mockVetScheduleService.createSchedule).toHaveBeenCalledWith(
+        scheduleData
+      );
     });
 
     it('should handle errors when creating schedule', async () => {
@@ -210,13 +256,13 @@ describe('useCalendar Hook', () => {
         speciality_id: 1,
         weekday: 1,
         start_time: '09:00',
-        end_time: '17:00'
+        end_time: '17:00',
       };
 
       mockVetScheduleService.createSchedule.mockResolvedValue({
         data: null,
         error: errorMessage,
-        success: false
+        success: false,
       });
 
       const { result } = renderHook(() => useVetSchedule());
@@ -237,18 +283,18 @@ describe('useCalendar Hook', () => {
         speciality_id: 1,
         weekday: 1,
         start_time: '08:00',
-        end_time: '16:00'
+        end_time: '16:00',
       };
 
       const updateData = {
         start_time: '08:00',
-        end_time: '16:00'
+        end_time: '16:00',
       };
 
       mockVetScheduleService.updateSchedule.mockResolvedValue({
         data: mockUpdatedSchedule,
         error: null,
-        success: true
+        success: true,
       });
 
       const { result } = renderHook(() => useVetSchedule());
@@ -258,14 +304,17 @@ describe('useCalendar Hook', () => {
         expect(schedule).toEqual(mockUpdatedSchedule);
       });
 
-      expect(mockVetScheduleService.updateSchedule).toHaveBeenCalledWith(1, updateData);
+      expect(mockVetScheduleService.updateSchedule).toHaveBeenCalledWith(
+        1,
+        updateData
+      );
     });
 
     it('should delete schedule successfully', async () => {
       mockVetScheduleService.deleteSchedule.mockResolvedValue({
         data: true,
         error: null,
-        success: true
+        success: true,
       });
 
       const { result } = renderHook(() => useVetSchedule());
@@ -286,14 +335,14 @@ describe('useCalendar Hook', () => {
           speciality_id: 1,
           weekday: 1,
           start_time: '09:00',
-          end_time: '17:00'
-        }
+          end_time: '17:00',
+        },
       ];
 
       mockVetScheduleService.getVetSchedules.mockResolvedValue({
         data: mockSchedules,
         error: null,
-        success: true
+        success: true,
       });
 
       const { result } = renderHook(() => useVetSchedule());
@@ -315,7 +364,7 @@ describe('useCalendar Hook', () => {
         date: '2024-03-15',
         start_time: '10:00',
         end_time: '11:00',
-        reason: 'Personal appointment'
+        reason: 'Personal appointment',
       };
 
       const blockData = {
@@ -323,13 +372,13 @@ describe('useCalendar Hook', () => {
         date: '2024-03-15',
         start_time: '10:00',
         end_time: '11:00',
-        reason: 'Personal appointment'
+        reason: 'Personal appointment',
       };
 
       mockAppointmentBlockService.createBlock.mockResolvedValue({
         data: mockBlock,
         error: null,
-        success: true
+        success: true,
       });
 
       const { result } = renderHook(() => useAppointmentBlocks());
@@ -341,7 +390,9 @@ describe('useCalendar Hook', () => {
 
       expect(result.current.loading).toBe(false);
       expect(result.current.error).toBeNull();
-      expect(mockAppointmentBlockService.createBlock).toHaveBeenCalledWith(blockData);
+      expect(mockAppointmentBlockService.createBlock).toHaveBeenCalledWith(
+        blockData
+      );
     });
 
     it('should create recurring block successfully', async () => {
@@ -352,7 +403,7 @@ describe('useCalendar Hook', () => {
           date: '2024-03-15',
           start_time: '12:00',
           end_time: '13:00',
-          reason: 'Lunch break'
+          reason: 'Lunch break',
         },
         {
           id: 2,
@@ -360,14 +411,14 @@ describe('useCalendar Hook', () => {
           date: '2024-03-16',
           start_time: '12:00',
           end_time: '13:00',
-          reason: 'Lunch break'
-        }
+          reason: 'Lunch break',
+        },
       ];
 
       mockAppointmentBlockService.createRecurringBlock.mockResolvedValue({
         data: mockBlocks,
         error: null,
-        success: true
+        success: true,
       });
 
       const { result } = renderHook(() => useAppointmentBlocks());
@@ -383,7 +434,9 @@ describe('useCalendar Hook', () => {
         expect(blocks).toEqual(mockBlocks);
       });
 
-      expect(mockAppointmentBlockService.createRecurringBlock).toHaveBeenCalledWith(
+      expect(
+        mockAppointmentBlockService.createRecurringBlock
+      ).toHaveBeenCalledWith(
         1,
         ['2024-03-15', '2024-03-16'],
         '12:00',
@@ -400,24 +453,30 @@ describe('useCalendar Hook', () => {
           date: '2024-03-15',
           start_time: '10:00',
           end_time: '11:00',
-          reason: 'Personal appointment'
-        }
+          reason: 'Personal appointment',
+        },
       ];
 
       mockAppointmentBlockService.getBlocksByDateRange.mockResolvedValue({
         data: mockBlocks,
         error: null,
-        success: true
+        success: true,
       });
 
       const { result } = renderHook(() => useAppointmentBlocks());
 
       await act(async () => {
-        const blocks = await result.current.getVetBlocks(1, '2024-03-01', '2024-03-31');
+        const blocks = await result.current.getVetBlocks(
+          1,
+          '2024-03-01',
+          '2024-03-31'
+        );
         expect(blocks).toEqual(mockBlocks);
       });
 
-      expect(mockAppointmentBlockService.getBlocksByDateRange).toHaveBeenCalledWith(1, '2024-03-01', '2024-03-31');
+      expect(
+        mockAppointmentBlockService.getBlocksByDateRange
+      ).toHaveBeenCalledWith(1, '2024-03-01', '2024-03-31');
     });
 
     it('should handle errors when creating blocks', async () => {
@@ -427,13 +486,13 @@ describe('useCalendar Hook', () => {
         date: '2024-03-15',
         start_time: '10:00',
         end_time: '11:00',
-        reason: 'Personal appointment'
+        reason: 'Personal appointment',
       };
 
       mockAppointmentBlockService.createBlock.mockResolvedValue({
         data: null,
         error: errorMessage,
-        success: false
+        success: false,
       });
 
       const { result } = renderHook(() => useAppointmentBlocks());

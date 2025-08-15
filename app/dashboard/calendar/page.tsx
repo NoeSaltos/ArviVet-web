@@ -39,7 +39,10 @@ export default function CalendarPage() {
 
   const handleEditAppointment = (appointment: Appointment) => {
     // Verificar permisos antes de permitir edición
-    if (permissions.canEditAppointment && permissions.canEditAppointment(appointment)) {
+    if (
+      permissions.canEditAppointment &&
+      permissions.canEditAppointment(appointment)
+    ) {
       setEditingAppointment(appointment);
       setIsEditModalOpen(true);
     }

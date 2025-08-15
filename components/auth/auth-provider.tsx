@@ -25,11 +25,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const auth = useSupabaseAuth();
 
-  return (
-    <AuthContext.Provider value={auth}>
-      {children}
-    </AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={auth}>{children}</AuthContext.Provider>;
 }
 
 // Hook para usar el contexto de autenticación
@@ -50,19 +46,23 @@ export function AuthDebugger() {
   }
 
   return (
-    <div style={{
-      position: 'fixed',
-      bottom: '10px',
-      right: '10px',
-      background: 'rgba(0,0,0,0.8)',
-      color: 'white',
-      padding: '10px',
-      borderRadius: '5px',
-      fontSize: '12px',
-      zIndex: 9999,
-      maxWidth: '300px'
-    }}>
-      <div><strong>Auth Debug</strong></div>
+    <div
+      style={{
+        position: 'fixed',
+        bottom: '10px',
+        right: '10px',
+        background: 'rgba(0,0,0,0.8)',
+        color: 'white',
+        padding: '10px',
+        borderRadius: '5px',
+        fontSize: '12px',
+        zIndex: 9999,
+        maxWidth: '300px',
+      }}
+    >
+      <div>
+        <strong>Auth Debug</strong>
+      </div>
       <div>Initializing: {isInitializing ? 'Yes' : 'No'}</div>
       <div>Loading: {isLoading ? 'Yes' : 'No'}</div>
       <div>Session: {session ? 'Active' : 'None'}</div>
@@ -90,12 +90,14 @@ export function ProtectedRoute({ children }: { children: React.ReactNode }) {
 
   if (isInitializing) {
     return (
-      <div style={{
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        height: '100vh'
-      }}>
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          height: '100vh',
+        }}
+      >
         <div>Verificando autenticación...</div>
       </div>
     );
@@ -103,12 +105,14 @@ export function ProtectedRoute({ children }: { children: React.ReactNode }) {
 
   if (!showContent || !session) {
     return (
-      <div style={{
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        height: '100vh'
-      }}>
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          height: '100vh',
+        }}
+      >
         <div>Redirigiendo al login...</div>
       </div>
     );

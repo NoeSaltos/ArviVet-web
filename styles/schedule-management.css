@@ -25,8 +25,12 @@
 }
 
 @keyframes spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 /* Header */
@@ -153,7 +157,8 @@
   font-size: 0.9rem;
 }
 
-.form-select, .form-input {
+.form-select,
+.form-input {
   padding: 10px 12px;
   border: 2px solid #e9ecef;
   border-radius: 8px;
@@ -162,13 +167,15 @@
   background: white;
 }
 
-.form-select:focus, .form-input:focus {
+.form-select:focus,
+.form-input:focus {
   outline: none;
   border-color: #667eea;
   box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
 }
 
-.form-select.small, .form-input.small {
+.form-select.small,
+.form-input.small {
   padding: 6px 8px;
   font-size: 0.85rem;
 }
@@ -180,7 +187,8 @@
   justify-content: flex-end;
 }
 
-.btn-save, .btn-cancel {
+.btn-save,
+.btn-cancel {
   display: flex;
   align-items: center;
   gap: 6px;
@@ -286,7 +294,8 @@
   align-items: center;
 }
 
-.btn-edit, .btn-delete {
+.btn-edit,
+.btn-delete {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -391,7 +400,8 @@
     text-align: center;
   }
 
-  .schedule-day, .schedule-time {
+  .schedule-day,
+  .schedule-time {
     min-width: auto;
   }
 

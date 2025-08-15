@@ -56,7 +56,7 @@ ON CONFLICT (nombre) DO NOTHING;
 
 -- Crear usuario temporal
 INSERT INTO public.users (nombre, correo, contrasena, rol_id) VALUES
-('Usuario Test', 'test@arvivet.com', 'password123', 
+('Usuario Test', 'test@arvivet.com', 'password123',
  (SELECT id FROM public.u_roles WHERE nombre = 'admin'));
 ```
 
@@ -77,6 +77,7 @@ ALTER TABLE public.pet DISABLE ROW LEVEL SECURITY;
 ### **1. Verificar en Consola del Navegador**
 
 Cuando ejecutes la app, revisa:
+
 - Console logs de autenticación
 - Errores de RLS
 - Cantidad de mascotas cargadas
@@ -85,10 +86,7 @@ Cuando ejecutes la app, revisa:
 
 ```javascript
 // En consola del navegador
-const { data, error } = await window.supabase
-  .from('pet')
-  .select('*')
-  .limit(1);
+const { data, error } = await window.supabase.from('pet').select('*').limit(1);
 
 console.log('Data:', data);
 console.log('Error:', error);
@@ -99,12 +97,14 @@ console.log('Error:', error);
 ### **Estado Actual del Proyecto:**
 
 ✅ **Listo para despliegue:**
+
 - Funcionalidad base implementada
 - Sistema de calendario completo
 - Autenticación configurada
 - Base de datos estructurada
 
 ⚠️ **Pendiente para producción:**
+
 - Solucionar políticas RLS definitivas
 - Configurar usuarios reales
 - Testing completo
@@ -119,13 +119,14 @@ console.log('Error:', error);
 ### **Plataformas Recomendadas:**
 
 1. **Vercel** (Recomendado para Next.js)
-2. **Netlify** 
+2. **Netlify**
 3. **Railway**
 4. **AWS Amplify**
 
 ### **Despliegue en Vercel (Recomendado):**
 
 #### **1. Preparación:**
+
 ```bash
 # Instalar Vercel CLI
 npm i -g vercel
@@ -135,7 +136,9 @@ vercel login
 ```
 
 #### **2. Configurar Variables de Entorno:**
+
 En Vercel Dashboard o CLI:
+
 ```bash
 NEXT_PUBLIC_SUPABASE_URL=tu_url_supabase
 NEXT_PUBLIC_SUPABASE_ANON_KEY=tu_anon_key
@@ -144,6 +147,7 @@ NEXT_PUBLIC_API_URL=https://tu-dominio.vercel.app/api
 ```
 
 #### **3. Desplegar:**
+
 ```bash
 # En la raíz del proyecto
 vercel
@@ -155,16 +159,20 @@ vercel --prod
 ### **Configuración en Supabase para Producción:**
 
 #### **1. URLs Permitidas:**
+
 En **Supabase Dashboard > Authentication > URL Configuration**:
+
 ```
 Site URL: https://tu-dominio.vercel.app
-Redirect URLs: 
+Redirect URLs:
   - https://tu-dominio.vercel.app/auth/callback
   - https://tu-dominio.vercel.app/dashboard
 ```
 
 #### **2. CORS:**
+
 En **Supabase Dashboard > Settings > API**:
+
 ```
 Allowed origins:
   - https://tu-dominio.vercel.app
@@ -174,12 +182,14 @@ Allowed origins:
 ## 🔧 **Tareas que Debes Hacer (Fuera de mi alcance):**
 
 ### **En Supabase Dashboard:**
+
 1. **Ejecutar** `database/rls-policies-fix.sql`
 2. **Verificar** que hay datos en las tablas
 3. **Configurar** URLs de autenticación para producción
 4. **Crear** usuario de prueba si es necesario
 
 ### **Para el Despliegue:**
+
 1. **Crear cuenta** en Vercel/Netlify
 2. **Conectar** repositorio GitHub
 3. **Configurar** variables de entorno
@@ -187,6 +197,7 @@ Allowed origins:
 5. **Configurar** dominio personalizado (opcional)
 
 ### **Testing Post-Despliegue:**
+
 1. **Verificar** que las mascotas aparecen
 2. **Probar** funcionalidad de calendario
 3. **Verificar** autenticación
@@ -206,9 +217,10 @@ Allowed origins:
    - Buscar errores 403/401
 
 3. **Consulta Directa:**
+
 ```sql
 -- En Supabase SQL Editor
-SELECT 
+SELECT
   p.id, p.name, p.breed,
   u.nombre as owner_name,
   u.correo as owner_email
