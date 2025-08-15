@@ -1,3 +1,5 @@
+/// <reference types="@testing-library/jest-dom" />
+
 import '@testing-library/jest-dom'
 
 declare global {
@@ -6,6 +8,8 @@ declare global {
       toBeInTheDocument(): R
       toHaveClass(className: string): R
       toBeDisabled(): R
+      toHaveBeenCalledTimes(times: number): R
+      toHaveBeenCalledWith(...args: any[]): R
     }
   }
 }

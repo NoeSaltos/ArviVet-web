@@ -1,16 +1,36 @@
-import { describe, it, expect } from '@jest/globals'
+import { describe, it, expect, jest } from '@jest/globals'
 import { render, screen } from '@testing-library/react'
 import '@testing-library/jest-dom'
+import React from 'react'
+
+// Types para el componente Button mock
+interface ButtonProps {
+  children: React.ReactNode
+  variant?: 'default' | 'outline' | 'ghost'
+  size?: 'default' | 'sm' | 'lg'
+  disabled?: boolean
+  onClick?: () => void
+  className?: string
+}
 
 // Mock del componente Button para testing
-const Button = ({ children, variant, size, disabled, onClick, ...props }: any) => (
+const Button: React.FC<ButtonProps> = ({ 
+  children, 
+  variant = 'default', 
+  size = 'default', 
+  disabled, 
+  onClick, 
+  className = '',
+  ...props 
+}) => (
   <button 
     className={`
       bg-primary border-input h-9 
       disabled:pointer-events-none
       ${variant === 'outline' ? 'border-input' : 'bg-primary'}
       ${size === 'sm' ? 'h-9' : ''}
-    `}
+      ${className}
+    `.trim()}
     disabled={disabled}
     onClick={onClick}
     {...props}
