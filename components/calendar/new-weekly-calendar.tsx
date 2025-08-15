@@ -36,17 +36,20 @@ import {
 import { es } from 'date-fns/locale';
 import { toZonedTime, formatInTimeZone } from 'date-fns-tz';
 import type { Appointment } from '@/types/appointment';
+import type { UserPermissions } from '@/hooks/use-permissions';
 
 interface NewWeeklyCalendarProps {
   onAppointmentClick?: (appointment: Appointment) => void;
-  userRole: string;
+  permissions: UserPermissions;
   onEditAppointment?: (appointment: Appointment) => void;
+  selectedVetId?: number | null;
 }
 
 export function NewWeeklyCalendar({
   onAppointmentClick,
-  userRole,
+  permissions,
   onEditAppointment,
+  selectedVetId,
 }: NewWeeklyCalendarProps) {
   const router = useRouter();
   const TIMEZONE = 'America/Guayaquil';

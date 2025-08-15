@@ -53,19 +53,17 @@ export default function DashboardPage() {
     router.push('/'); // Redirigir a la página de selección de usuario o login
   };
 
-  // Botones de navegación condicionales
+  // Botones de navegación condicionales basados en permisos
   const adminButtons = [
     { label: 'Calendario de consultas', href: '/dashboard/calendar' },
     { label: 'Historial de pacientes', href: '/dashboard/patients' },
-
     { label: 'Personal médico', href: '/dashboard/staff' },
   ];
 
   const vetButtons = [
     { label: 'Calendario de consultas', href: '/dashboard/calendar' },
     { label: 'Historial de pacientes', href: '/dashboard/patients' },
-
-    { label: 'Personal médico', href: '/dashboard/staff' },
+    // Los veterinarios NO tienen acceso a Personal médico
   ];
 
   const buttonsToShow =

@@ -1,3 +1,7 @@
+/* Importar estilos de componentes */
+@import '../styles/staff.css';
+@import '../styles/schedule-management.css';
+
 /* Reset y base styles */
 * {
   margin: 0;

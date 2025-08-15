@@ -13,6 +13,9 @@ jobs:
   deploy:
     name: Deploy Application
     runs-on: ubuntu-latest
+    env:
+       NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+       NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
     needs: [] # Se puede configurar para depender de otros workflows
     if: github.ref == 'refs/heads/main'
 
@@ -71,6 +74,8 @@ jobs:
       #   run: |
       #     aws s3 sync .next/static s3://$AWS_S3_BUCKET/static
       #     aws s3 sync .next s3://$AWS_S3_BUCKET/_next
+
+      
 
       - name: Deployment notification
         run: |
