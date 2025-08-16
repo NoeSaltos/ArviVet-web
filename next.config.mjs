@@ -9,6 +9,6 @@ const nextConfig = {
   images: {
     unoptimized: true, // Deshabilita la optimización de imágenes de Next.js para usar imágenes directamente
   },
-}
+};
 
-export default nextConfig
+export default nextConfig;
