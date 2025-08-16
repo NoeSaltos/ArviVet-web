@@ -10,26 +10,6 @@ export const petsService = {
   // Obtener todas las mascotas con información del dueño
   async getAllPets(): Promise<PetWithOwner[]> {
     try {
-      // Verificar sesión de usuario con Supabase Auth
-      const { data: { session }, error: sessionError } = await supabase.auth.getSession();
-      
-      if (sessionError) {
-        console.error("Session error:", sessionError);
-        throw new Error("Error de autenticación");
-      }
-
-      if (!session) {
-        console.error("No active session");
-        throw new Error("Usuario no autenticado - Por favor inicie sesión");
-      }
-
-      console.log("User authenticated with Supabase:", session.user.email);
-      console.log("Session details:", {
-        user_id: session.user.id,
-        email: session.user.email,
-        role: session.user.role,
-        expires_at: session.expires_at
-      });
 
       const { data, error } = await supabase
         .from("pet")
@@ -57,7 +37,7 @@ export const petsService = {
         
         // Si es un error de RLS, dar más información específica
         if (error.code === '42501' || error.message.includes('row-level security')) {
-          throw new Error(`Sin permisos para ver las mascotas. Usuario: ${session.user.email}. Verifique las políticas RLS en Supabase.`);
+          throw new Error(`Sin permisos para ver las mascotas. Verifique las políticas RLS en Supabase.`);
         }
         
         if (error.code === 'PGRST116') {

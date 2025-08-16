@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { Clock, Plus, Edit, Trash2, Save, X, AlertCircle } from 'lucide-react';
 import { usePermissions } from '@/hooks/use-permissions';
 import { vetScheduleService } from '@/services/vet-schedule-service';
+import { specialityService, type Speciality } from '@/services/speciality-service';
 import type { VetSchedule } from '@/types/database';
 
 interface ScheduleManagementProps {
@@ -41,9 +42,7 @@ export function ScheduleManagement({
     null
   );
   const [isCreating, setIsCreating] = useState(false);
-  const [specialities, setSpecialities] = useState<
-    Array<{ id: number; name: string }>
-  >([]);
+  const [specialities, setSpecialities] = useState<Speciality[]>([]);
 
   const [scheduleForm, setScheduleForm] = useState<ScheduleForm>({
     weekday: 1,
@@ -79,17 +78,16 @@ export function ScheduleManagement({
 
   const loadSpecialities = async () => {
     try {
-      // Aquí deberías cargar las especialidades desde tu API
-      // Por ahora, usamos datos simulados
-      const mockSpecialities = [
-        { id: 1, name: 'Consulta General' },
-        { id: 2, name: 'Cirugía' },
-        { id: 3, name: 'Vacunación' },
-        { id: 4, name: 'Emergencias' },
-      ];
-      setSpecialities(mockSpecialities);
+      const response = await specialityService.getAllSpecialities();
+      if (response.error) {
+        console.error('Error loading specialities:', response.error);
+        setSpecialities([]);
+      } else {
+        setSpecialities(response.data || []);
+      }
     } catch (err) {
       console.error('Error loading specialities:', err);
+      setSpecialities([]);
     }
   };
 

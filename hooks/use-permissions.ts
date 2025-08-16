@@ -132,7 +132,12 @@ export function usePermissions() {
   };
 
   return {
-    permissions,
+    permissions: {
+      ...permissions,
+      canEditAppointment,
+      canViewAppointment,
+      canCreateScheduleFor,
+    },
     loading,
     error,
     hasPermission,

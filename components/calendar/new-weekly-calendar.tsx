@@ -23,7 +23,7 @@ import {
   Settings,
   Home,
 } from 'lucide-react';
-import { appointmentService } from '@/services/appointment-service';
+import { calendarService } from '@/services/calendar-service';
 import {
   format,
   addDays,
@@ -116,7 +116,7 @@ export function NewWeeklyCalendar({
 
   useEffect(() => {
     loadAppointments();
-  }, [currentDate]);
+  }, [currentDate, selectedVetId, permissions]);
 
   // Cargar datos del usuario al inicializar
   useEffect(() => {
@@ -169,10 +169,58 @@ export function NewWeeklyCalendar({
   const loadAppointments = async () => {
     try {
       setLoading(true);
-      const data = await appointmentService.getAppointments();
-      setAppointments(data);
+      
+      // Calculate week start and end dates
+      const startDate = format(getDateForDayIndex(0), 'yyyy-MM-dd');
+      const endDate = format(getDateForDayIndex(5), 'yyyy-MM-dd');
+      
+      const response = await calendarService.getAppointments({
+        startDate,
+        endDate,
+        vetId: selectedVetId || undefined
+      }, permissions);
+      
+      if (response.error) {
+        console.error('Error loading appointments:', response.error);
+        setAppointments([]);
+      } else {
+        // Transform the data to match the Appointment interface
+        const transformedAppointments = (response.data || []).map(apt => ({
+          id: apt.id.toString(),
+          date: apt.date,
+          time: apt.hour,
+          duration: apt.duration_minutes || 60,
+          status: apt.status,
+          type: 'consulta_general', // Map from speciality if needed
+          reason: apt.speciality?.name || 'Consulta veterinaria',
+          notes: '', // Not available in current schema
+          owner: {
+            id: apt.pet?.users?.id?.toString() || 'unknown',
+            name: apt.pet?.users?.nombre || 'Cliente',
+            phone: apt.pet?.users?.telefono || '',
+            email: apt.pet?.users?.correo || ''
+          },
+          pet: {
+            id: apt.pet?.id?.toString() || 'unknown',
+            name: apt.pet?.name || 'Mascota',
+            type: apt.pet?.specie === 'canino' ? 'perro' : apt.pet?.specie === 'felino' ? 'gato' : 'otro',
+            breed: apt.pet?.breed || 'Mestizo',
+            age: 0, // Not available in current schema
+            weight: 0 // Not available in current schema
+          },
+          veterinarian: {
+            id: apt.vet?.id?.toString() || 'unknown',
+            name: apt.vet?.name || 'Veterinario'
+          },
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString()
+        }));
+        
+        setAppointments(transformedAppointments);
+      }
     } catch (error) {
       console.error('Error loading appointments:', error);
+      setAppointments([]);
     } finally {
       setLoading(false);
     }
@@ -578,7 +626,7 @@ export function NewWeeklyCalendar({
                   />
                 ) : (
                   <div className="arvi-user-avatar-fallback apple-avatar">
-                    {userData?.name?.charAt(0) || userRole.charAt(0)}
+                    {userData?.name?.charAt(0) || (permissions.isAdmin ? 'A' : permissions.isVet ? 'V' : 'U')}
                   </div>
                 )}
               </button>
@@ -597,7 +645,7 @@ export function NewWeeklyCalendar({
                     </div>
                     <div className="profile-item">
                       <span className="profile-label">Tipo</span>
-                      <span className="profile-value">{userRole}</span>
+                      <span className="profile-value">{permissions.isAdmin ? 'Administrador' : permissions.isVet ? 'Veterinario' : 'Usuario'}</span>
                     </div>
                     <div className="profile-item">
                       <span className="profile-label">ID</span>

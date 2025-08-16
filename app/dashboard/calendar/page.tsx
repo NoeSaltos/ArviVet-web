@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { authService } from '@/services/auth-service';
 import { usePermissions } from '@/hooks/use-permissions';
@@ -8,7 +8,7 @@ import { NewWeeklyCalendar } from '@/components/calendar/new-weekly-calendar';
 import { EditAppointmentModal } from '@/components/calendar/edit-appointment-modal';
 import type { Appointment } from '@/types/appointment';
 
-export default function CalendarPage() {
+function CalendarPageContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { permissions, loading: permissionsLoading } = usePermissions();
@@ -89,5 +89,20 @@ export default function CalendarPage() {
         />
       )}
     </>
+  );
+}
+
+export default function CalendarPage() {
+  return (
+    <Suspense fallback={
+      <div className="calendar-container">
+        <div className="calendar-overlay" />
+        <div className="loading-message">
+          <p>Cargando calendario...</p>
+        </div>
+      </div>
+    }>
+      <CalendarPageContent />
+    </Suspense>
   );
 }
