@@ -43,16 +43,22 @@ export default function StaffPage() {
       return;
     }
 
+    // Solo proceder cuando los permisos hayan cargado
+    if (permissionsLoading) {
+      return;
+    }
+
     // Verificar permisos
-    if (!permissionsLoading && !permissions.canManageStaff) {
+    if (!permissions.canManageStaff) {
       router.push('/dashboard');
       return;
     }
 
-    if (permissions.canManageStaff) {
+    // Cargar veterinarios solo una vez cuando los permisos están listos
+    if (permissions.canManageStaff && veterinarians.length === 0) {
       loadVeterinarians();
     }
-  }, [permissions, permissionsLoading, router]);
+  }, [permissions.canManageStaff, permissionsLoading, router]);
 
   const loadVeterinarians = async () => {
     try {

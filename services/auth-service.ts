@@ -90,9 +90,16 @@ class AuthService {
       // Mapear el rol de la base de datos al userType esperado
       const roleMapping: Record<string, string> = {
         'Administrador': 'administrativo',
+        'admin': 'administrativo',
+        'Admin': 'administrativo',
         'Veterinario': 'veterinario',
+        'veterinario': 'veterinario',
+        'Vet': 'veterinario',
+        'vet': 'veterinario',
         'Cliente': 'cliente',
-        'Asistente': 'asistente'
+        'cliente': 'cliente',
+        'Asistente': 'asistente',
+        'asistente': 'asistente'
       }
 
       const dbUserType = userData.u_roles?.nombre || 'Cliente'
